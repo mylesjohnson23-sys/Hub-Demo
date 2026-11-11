@@ -1,4 +1,4 @@
-# Command Hub — Prototype Demo
+# Priority Deck — Prototype Demo
 
 Your Personal Command Center. Cut the Noise. Take Command.
 

@@ -1,6 +1,6 @@
 {
-  "name": "Command Hub",
-  "short_name": "Command Hub",
+  "name": "Priority Deck",
+  "short_name": "Priority Deck",
   "description": "Your personal command center. Cut the noise. Take command.",
   "start_url": "./#focus",
   "scope": "./",

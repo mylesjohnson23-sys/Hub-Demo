@@ -9,11 +9,11 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Command Hub">
+<meta name="apple-mobile-web-app-title" content="Priority Deck">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#101820">
-<meta name="description" content="Command Hub — your personal command center. Cut the noise. Take command.">
-<title>Command Hub — Your Personal Command Center</title>
+<meta name="description" content="Priority Deck — your personal command center. Cut the noise. Take command.">
+<title>Priority Deck — Your Personal Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -299,7 +299,7 @@
 <div class="wrap">
   <div class="warnbar" id="noSave">This browser isn't saving. Use Rules → Backup before you close it.</div>
   <div class="demo" id="demoBar">
-    <div class="demo-t"><i></i>Command Hub · live demo</div>
+    <div class="demo-t"><i></i>Priority Deck · live demo</div>
     <p>You're inside a working command center for a fictional studio. Tap, star, decide — nothing here touches your own data.</p>
     <div class="row2"><button class="btn solid" id="tourBtn" type="button">Explore Demo</button><button class="btn" id="mineBtn" type="button">Make It Mine</button></div>
   </div>
@@ -310,7 +310,7 @@
   </div>
 
   <header class="mast">
-    <div class="mast-top"><div class="eyebrow" id="mEyebrow">Your Hub</div><button class="rules-link" id="rulesBtn" type="button">Rules</button></div>
+    <div class="mast-top"><div class="eyebrow" id="mEyebrow">Your Deck</div><button class="rules-link" id="rulesBtn" type="button">Rules</button></div>
     <div class="theme" id="mTheme">Your year</div>
     <p class="tagline" id="mTagline"></p>
     <div class="focus" id="mFocusBox">
@@ -319,7 +319,7 @@
     </div>
   </header>
 
-  <nav class="tabs" role="tablist" aria-label="Hub views">
+  <nav class="tabs" role="tablist" aria-label="Deck views">
     <button class="tab" role="tab" data-v="focus" aria-selected="true">Focus<span class="ct" id="ctFocus" hidden></span></button>
     <button class="tab" role="tab" data-v="business" aria-selected="false">Business<span class="ct" id="ctBiz" hidden></span></button>
     <button class="tab" role="tab" data-v="personal" aria-selected="false" id="tabPersonal">Personal<span class="ct" id="ctLife" hidden></span></button>
@@ -517,7 +517,7 @@
     </details>
     <details class="sec backup" open>
       <summary><div><span class="sec-title">Backup</span><span class="sec-sub" id="bSub">Your data lives only on this device.</span></div><span class="chev">›</span></summary>
-      <div class="sec-body" id="bDemoNote" hidden><div class="note">Backup saves <b>your</b> Hub, not the demo. Tap <b>Make It Mine</b> to start one.</div></div>
+      <div class="sec-body" id="bDemoNote" hidden><div class="note">Backup saves <b>your</b> Deck, not the demo. Tap <b>Make It Mine</b> to start one.</div></div>
       <div class="sec-body" id="bBody">
         <div class="row2">
           <button class="btn" id="bExport" type="button">Export backup</button>
@@ -529,32 +529,32 @@
       </div>
     </details>
     <details class="sec" open id="secDemoCtl">
-      <summary><div><span class="sec-title">Demo</span><span class="sec-sub">Sample data. Separate from your Hub.</span></div><span class="chev">›</span></summary>
-      <div class="sec-body"><div class="row2"><button class="btn" id="sMine" type="button">Make It Mine</button><button class="btn ghost" id="sResetDemo" type="button">Reset demo</button></div><p class="hint">Reset restores the sample company. Your own Hub is never affected.</p></div>
+      <summary><div><span class="sec-title">Demo</span><span class="sec-sub">Sample data. Separate from your Deck.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body"><div class="row2"><button class="btn" id="sMine" type="button">Make It Mine</button><button class="btn ghost" id="sResetDemo" type="button">Reset demo</button></div><p class="hint">Reset restores the sample company. Your own Deck is never affected.</p></div>
     </details>
     <details class="sec" open id="secStats">
       <summary><div><span class="sec-title">Your stats</span><span class="sec-sub">Counts only. No task text. Nothing is sent automatically.</span></div><span class="chev">›</span></summary>
       <div class="sec-body"><div class="statbox" id="statText"></div><button class="btn solid" id="statCopy" type="button">Copy my stats</button><p class="hint">Paste into your reply to the test team.</p></div>
     </details>
     <details class="sec" id="secMineCtl">
-      <summary><div><span class="sec-title">Workspace</span><span class="sec-sub">Your Hub and the demo are kept apart.</span></div><span class="chev">›</span></summary>
+      <summary><div><span class="sec-title">Workspace</span><span class="sec-sub">Your Deck and the demo are kept apart.</span></div><span class="chev">›</span></summary>
       <div class="sec-body">
-        <div class="row2"><button class="btn ghost" id="sDemo" type="button">View demo</button><button class="btn danger" id="sClear" type="button">Clear my Hub…</button></div>
-        <p class="hint">Viewing the demo leaves your Hub untouched. Clearing asks for confirmation — export a backup first.</p>
+        <div class="row2"><button class="btn ghost" id="sDemo" type="button">View demo</button><button class="btn danger" id="sClear" type="button">Clear my Deck…</button></div>
+        <p class="hint">Viewing the demo leaves your Deck untouched. Clearing asks for confirmation — export a backup first.</p>
       </div>
     </details>
   </div>
 
-  <footer id="foot">Command Hub · prototype · your data stays on this device</footer>
+  <footer id="foot">Priority Deck · prototype · your data stays on this device</footer>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <div class="scrim" id="scrim"></div>
 
-<!-- First open: sits over a live, populated Hub -->
+<!-- First open: sits over a live, populated Deck -->
 <div class="sheet" id="intro"><div class="in">
-  <div class="eyebrow">Command Hub · Your Personal Command Center</div>
+  <div class="eyebrow">Priority Deck · Your Personal Command Center</div>
   <div class="theme">Cut the Noise. Take Command.</div>
   <p class="tagline">A working command center for Reed Studio, a fictional design studio. One week in, mid-flight.</p>
   <div class="pts">
@@ -571,10 +571,10 @@
 <!-- Make It Mine -->
 <div class="sheet" id="mine"><div class="in">
   <div class="eyebrow">Make It Mine</div>
-  <div class="theme" id="mineH">Start your own Hub</div>
+  <div class="theme" id="mineH">Start your own Deck</div>
   <p class="tagline" id="mineP">A clean workspace, saved only on this device. The demo stays available — switching never touches your data.</p>
-  <div class="field" id="mineField"><label>What should Hub call you?</label><input id="wName" placeholder="First name or business" autocomplete="given-name" maxlength="40"></div>
-  <button class="btn solid" id="wBlank" type="button">Create my Hub</button>
+  <div class="field" id="mineField"><label>What should Deck call you?</label><input id="wName" placeholder="First name or business" autocomplete="given-name" maxlength="40"></div>
+  <button class="btn solid" id="wBlank" type="button">Create my Deck</button>
   <button class="link alt" id="wCancel" type="button">Back to the demo</button>
 </div></div>
 
@@ -588,7 +588,7 @@
 
 <!-- Destructive confirmation -->
 <div class="modal" id="confirm" role="dialog" aria-modal="true" aria-labelledby="cH"><div class="in">
-  <h3 id="cH">Clear your Hub?</h3>
+  <h3 id="cH">Clear your Deck?</h3>
   <p id="cP"></p>
   <p>Type <b style="color:var(--text)">CLEAR</b> to confirm.</p>
   <input id="cIn" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Type CLEAR to confirm">
@@ -708,7 +708,7 @@
     return {
       v: 5, mode: "blank",
       cfg: {
-        name: name || "Your Hub", theme: "Your year", tagline: "Less noise. More control.",
+        name: name || "Your Deck", theme: "Your year", tagline: "Less noise. More control.",
         focus: "Name the one thing the next 90 days are for.",
         start: "08:30", end: "09:30",
         tags: ["WORK","CLIENT","ADMIN","MAIL"],
@@ -735,7 +735,7 @@
   ];
 
   // ---------- storage ----------
-  // Two stores, never shared. Demo = sample company (resettable). Mine = the visitor's own Hub.
+  // Two stores, never shared. Demo = sample company (resettable). Mine = the visitor's own Deck.
   const K = { demo: "hub-demo-sample-v5", mine: "hub-mine-v1", active: "hub-active", seen: "hub-intro-seen" };
   let state, firstRun = false, canSave = true;
   try { const k = "__hub_t"; localStorage.setItem(k, "1"); localStorage.removeItem(k); } catch (e) { canSave = false; }
@@ -775,14 +775,14 @@
   const readStore = k => { try { const r = lsGet(k); if (!r) return null; const p = JSON.parse(r); return valid(p) ? normalize(fill(p)) : null; } catch (e) { return null; } };
   const hasMine = () => !!readStore(K.mine);
 
-  // One-time migration from v3/v4 single-slot builds: a personal Hub moves to "mine"; old sample data is discarded.
+  // One-time migration from v3/v4 single-slot builds: a personal Deck moves to "mine"; old sample data is discarded.
   ["hub-demo-v4", "hub-demo-v3"].forEach(old => {
     const r = lsGet(old); if (!r) return;
     try {
       const p = JSON.parse(r);
       if (valid(p) && p.mode !== "sample" && !lsGet(K.mine)) { p.mode = "blank"; lsSet(K.mine, JSON.stringify(p)); lsSet(K.active, "mine"); }
     } catch (e) {}
-    if (lsGet(K.mine) || !/"mode"\s*:\s*"blank"/.test(r)) lsDel(old); // never delete an unmigrated personal Hub
+    if (lsGet(K.mine) || !/"mode"\s*:\s*"blank"/.test(r)) lsDel(old); // never delete an unmigrated personal Deck
   });
 
   // Demo always opens "today": reseed if it was built on an earlier day.
@@ -1244,8 +1244,8 @@
   const trig = min => (min < 0 ? "-" : "") + "PT" + Math.abs(min) + "M";
   function buildIcs(r) {
     const start = nextOcc(r), stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
-    const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Command Hub//Reminders//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
-      "BEGIN:VEVENT", "UID:" + r.id + "@commandhub", "DTSTAMP:" + stamp];
+    const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Priority Deck//Reminders//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+      "BEGIN:VEVENT", "UID:" + r.id + "@prioritydeck", "DTSTAMP:" + stamp];
     let alarms;
     if (r.time) {
       const [h, m] = r.time.split(":").map(Number), hh = String(h).padStart(2, "0"), mm = String(m).padStart(2, "0");
@@ -1366,7 +1366,7 @@
     });
   }
   $("sSave").onclick = () => {
-    state.cfg.name = $("sName").value.trim() || "Your Hub";
+    state.cfg.name = $("sName").value.trim() || "Your Deck";
     state.cfg.theme = $("sTheme").value.trim() || "Your year";
     state.cfg.tagline = $("sTagline").value.trim();
     state.cfg.focus = $("sFocus").value.trim();
@@ -1414,22 +1414,22 @@
   function openMine() {
     endTour(true);
     const exists = hasMine();
-    $("mineH").textContent = exists ? "Your Hub is ready" : "Start your own Hub";
+    $("mineH").textContent = exists ? "Your Deck is ready" : "Start your own Deck";
     $("mineP").textContent = exists
-      ? "You already have a Hub on this device. Opening it changes nothing — your data stays exactly as you left it."
+      ? "You already have a Deck on this device. Opening it changes nothing — your data stays exactly as you left it."
       : "A clean workspace, saved only on this device. The demo stays available — switching never touches your data.";
     $("mineField").hidden = exists;
-    $("wBlank").textContent = exists ? "Open my Hub" : "Create my Hub";
+    $("wBlank").textContent = exists ? "Open my Deck" : "Create my Deck";
     $("wName").value = "";
     openSheet("mine");
     if (!exists) setTimeout(() => $("wName").focus(), 60);
   }
   $("wBlank").onclick = () => {
     lsSet(K.seen, "1");
-    if (hasMine()) { closeSheets(); goMine(); toast("Welcome back"); return; } // never overwrite an existing Hub
+    if (hasMine()) { closeSheets(); goMine(); toast("Welcome back"); return; } // never overwrite an existing Deck
     const name = $("wName").value.trim();
     const s = blankState(name); lsSet(K.mine, JSON.stringify(s));
-    closeSheets(); goMine(s); toast(name ? "Welcome, " + name : "Your Hub is ready");
+    closeSheets(); goMine(s); toast(name ? "Welcome, " + name : "Your Deck is ready");
   };
   $("wName").onkeydown = e => { if (e.key === "Enter") $("wBlank").click(); };
   $("wCancel").onclick = closeSheets;
@@ -1437,8 +1437,8 @@
   ["mineBtn","iMine","sMine"].forEach(id => $(id).onclick = openMine);
   ["tourBtn","iTour"].forEach(id => $(id).onclick = () => { lsSet(K.seen, "1"); startTour(); });
   $("iLook").onclick = () => { lsSet(K.seen, "1"); closeSheets(); };
-  $("viewDemo").onclick = () => goDemo("Demo · your Hub is untouched");
-  $("sDemo").onclick = () => goDemo("Demo · your Hub is untouched");
+  $("viewDemo").onclick = () => goDemo("Demo · your Deck is untouched");
+  $("sDemo").onclick = () => goDemo("Demo · your Deck is untouched");
   $("sResetDemo").onclick = e => confirmTap(e.currentTarget, "Reset demo", () => { const s = seed(); lsSet(K.demo, JSON.stringify(s)); load(s, "Demo reset"); show("focus"); });
 
   // ---------- confirmation for clearing personal data ----------
@@ -1456,14 +1456,14 @@
   $("sClear").onclick = () => {
     const m = readStore(K.mine) || state;
     const n = m.office.length + m.personal.length + m.decisions.length + m.log.length + m.ventures.length + m.milestones.length + m.briefs.length + m.trips.length;
-    askClear("Clear your Hub?", "This permanently erases " + n + " item" + (n === 1 ? "" : "s") + ", your settings and history on this device. It can't be undone unless you exported a backup.", "Clear my Hub", () => {
-      const s = blankState(m.cfg.name); lsSet(K.mine, JSON.stringify(s)); goMine(s); toast("Your Hub was cleared");
+    askClear("Clear your Deck?", "This permanently erases " + n + " item" + (n === 1 ? "" : "s") + ", your settings and history on this device. It can't be undone unless you exported a backup.", "Clear my Deck", () => {
+      const s = blankState(m.cfg.name); lsSet(K.mine, JSON.stringify(s)); goMine(s); toast("Your Deck was cleared");
     });
   };
 
   // ---------- guided tour (demo only) ----------
   const TOUR = [
-    { v: "focus", sel: ".hero", h: "One next action", p: "Command Hub picks the single most important thing to do now, and shows what got done this week." },
+    { v: "focus", sel: ".hero", h: "One next action", p: "Priority Deck picks the single most important thing to do now, and shows what got done this week." },
     { v: "focus", sel: "#exceptions", h: "Only what needs you", p: "Decisions owed, overdue dates, gates coming up. Exceptions only. Tap any row to jump to it." },
     { v: "focus", sel: "#focusList", up: true, h: "Three priorities. Hard cap.", p: "Star up to three tasks from anywhere. A fourth won't fit. Tap a task to mark it done — try it." },
     { v: "business", sel: "#officeForm", up: true, h: "Office Hours: park it, mark it", p: "Drop tasks in with a tag. Tap to mark ✓, hold to edit. Done items clear themselves tomorrow." },
@@ -1506,7 +1506,7 @@
     const ttf = mins == null ? "not yet" : mins < 1 ? "under 1 min" : Math.round(mins) + " min";
     const off = Object.entries(state.cfg.mods).filter(([, v]) => !v).map(([k]) => k).join(", ") || "none";
     return [
-      "COMMAND HUB · TEST STATS · " + dayKey(),
+      "PRIORITY DECK · TEST STATS · " + dayKey(),
       "Started: " + dayKey(d0) + " · days active: " + st.days.length,
       "Time to first task done: " + ttf,
       "Tasks added " + st.added + " · done " + st.done + " · edited " + st.edited + " · removed " + st.removed + " · starred " + st.starred,
@@ -1541,20 +1541,20 @@
     $("secDemoCtl").style.display = demo ? "" : "none";
     $("secMineCtl").style.display = demo ? "none" : "";
     $("bDemoNote").hidden = !demo; $("bBody").hidden = demo;
-    $("bSub").textContent = demo ? "For your own Hub." : "Your data lives only on this device.";
-    $("foot").textContent = demo ? "Command Hub · demo · sample data resets daily · your own Hub is kept separately" : "Command Hub · prototype · your data stays on this device";
+    $("bSub").textContent = demo ? "For your own Deck." : "Your data lives only on this device.";
+    $("foot").textContent = demo ? "Priority Deck · demo · sample data resets daily · your own Deck is kept separately" : "Priority Deck · prototype · your data stays on this device";
     $("noSave").style.display = canSave ? "none" : "block";
   }
 
   // ---------- backup ----------
-  const backupText = () => JSON.stringify({ app: "command-hub", version: 5, exported: new Date().toISOString(), state }, null, 1);
+  const backupText = () => JSON.stringify({ app: "priority-deck", version: 5, exported: new Date().toISOString(), state }, null, 1);
   $("bExport").onclick = () => {
     const txt = backupText(); $("bText").value = txt;
     if (window.claude) { toast("Backup ready below. Tap Copy and save it."); return; }
     try {
       const a = document.createElement("a");
       a.href = URL.createObjectURL(new Blob([txt], { type: "application/json" }));
-      a.download = "command-hub-backup-" + dayKey() + ".json";
+      a.download = "priority-deck-backup-" + dayKey() + ".json";
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(() => URL.revokeObjectURL(a.href), 4000);
       toast("Backup exported");
@@ -1566,11 +1566,11 @@
     catch (e) { $("bText").focus(); $("bText").select(); toast("Select all and copy"); }
   };
   function restore(txt) {
-    let p; try { p = JSON.parse(txt); } catch (e) { toast("That isn't a Hub backup."); return; }
+    let p; try { p = JSON.parse(txt); } catch (e) { toast("That isn't a Deck backup."); return; }
     const s = p && p.state ? p.state : p;
-    if (!valid(s)) { toast("That isn't a Hub backup."); return; }
+    if (!valid(s)) { toast("That isn't a Deck backup."); return; }
     const apply = () => { const r = normalize(fill(s)); r.mode = "blank"; lsSet(K.mine, JSON.stringify(r)); goMine(r); toast("Restored"); };
-    askClear("Replace your Hub with this backup?", "Everything currently in your Hub on this device is replaced by the backup. Export first if you want to keep it.", "Replace", apply);
+    askClear("Replace your Deck with this backup?", "Everything currently in your Deck on this device is replaced by the backup. Export first if you want to keep it.", "Replace", apply);
   }
   $("bImport").onclick = () => {
     const txt = $("bText").value.trim(); if (!txt) { toast("Paste a backup first."); return; }
