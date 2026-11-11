@@ -146,6 +146,70 @@
   .stage b{color:var(--text);font-weight:600}
   .stage .s{display:block;font:600 10.5px/1 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
 
+  /* Portfolio */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:10px}
+  .card.parked{background:transparent;opacity:.62}
+  .card-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .mono{width:34px;height:34px;flex:none;border-radius:9px;background:var(--gold-dim);color:var(--gold);display:grid;place-items:center;font:700 13px Manrope,Inter,system-ui,sans-serif;margin-right:12px}
+  .card-name{font:700 17px/1.2 Manrope,Inter,system-ui,sans-serif}
+  .card-role{font-size:13px;color:var(--muted)}
+  .pill{font:600 11px/1 Inter,system-ui,sans-serif;padding:7px 10px;border-radius:999px;white-space:nowrap;display:inline-flex;gap:6px;align-items:center;background:var(--card2);color:var(--text);border:0;cursor:pointer}
+  .pill i{width:7px;height:7px;border-radius:50%;display:inline-block}
+  .kv{margin:12px 0 0;font-size:14px}
+  .kv div{display:flex;gap:10px;padding:3px 0}
+  .kv dt{color:var(--muted);min-width:56px;font-size:13px}
+  .kv dd{margin:0;flex:1}
+  .card-f{display:flex;justify-content:flex-end;gap:14px;margin-top:8px}
+  .formcard{background:var(--card2);border:1px dashed var(--line);border-radius:12px;padding:12px;margin-top:6px}
+  .formcard input{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:0 12px;min-height:42px;outline:0;margin-bottom:8px}
+  .formcard input:focus{border-color:var(--gold)}
+  .formcard textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:10px 12px;min-height:80px;outline:0;margin-bottom:8px;resize:vertical}
+  .formcard .r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .formcard .r input{margin-bottom:0;flex:1;min-width:130px}
+  .formcard label.ck{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--muted);white-space:nowrap}
+  .formcard label.ck input{width:auto;min-height:0;margin:0}
+  .formcard .btn{min-height:42px}
+  .addlink{background:none;border:0;color:var(--gold);font:600 13px Inter,system-ui,sans-serif;cursor:pointer;padding:8px 2px}
+
+  /* Milestones */
+  .ms{display:flex;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+  .ms:first-child{border-top:0}
+  .ms-date{min-width:52px;text-align:center}
+  .ms-date b{display:block;font:700 20px/1 Manrope,Inter,system-ui,sans-serif}
+  .ms-date span{font:600 11px/1 Inter,system-ui,sans-serif;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .ms-body{flex:1;min-width:0}
+  .ms-t{font-weight:500}
+  .ms-m{font-size:13px;color:var(--muted)}
+  .ms.gate .ms-date b{color:var(--gold)}
+  .ms.past{opacity:.5}
+  .ms.late .ms-date b,.ms.late .ms-m{color:var(--bad)}
+  .ms-btn{flex:none;align-self:center;min-height:40px;min-width:88px;padding:0 10px;border-radius:10px;border:1px solid var(--gold);background:transparent;color:var(--gold);font:600 13px Inter,system-ui,sans-serif;cursor:pointer}
+  .ms.past .ms-btn{border-color:var(--line);color:var(--muted)}
+
+  /* Briefs */
+  .brief{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:8px}
+  .brief>summary{list-style:none;cursor:pointer;padding:14px;min-height:44px}
+  .brief>summary::-webkit-details-marker{display:none}
+  .brief .bt{font:600 15px/1.3 Manrope,Inter,system-ui,sans-serif}
+  .brief .bm{font-size:12px;color:var(--muted);margin-top:3px}
+  .brief .bb{padding:0 14px 14px;font-size:14px;color:#DDE2E6}
+  .brief .bb ul{margin:6px 0 0;padding-left:18px}
+
+  /* Rhythm */
+  .rh{display:grid;grid-template-columns:92px 1fr;gap:4px 14px;padding:12px 0;border-top:1px solid var(--line);font-size:14px}
+  .rh:first-child{border-top:0}
+  .rh b{font:700 14px Manrope,Inter,system-ui,sans-serif;color:var(--gold)}
+  .rh span{color:var(--muted);font-size:13px}
+
+  /* Coming up */
+  .trip{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;margin-bottom:10px}
+  .trip.now{border-color:var(--gold)}
+  .trip-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .trip-t{font:700 17px/1.25 Manrope,Inter,system-ui,sans-serif}
+  .trip-d{font-size:13px;color:var(--muted);margin-top:3px}
+  .trip-s{font-size:13px;color:var(--muted);margin-top:8px}
+  .cd{font:600 12px/1 Inter,system-ui,sans-serif;color:var(--gold);background:var(--gold-dim);border-radius:999px;padding:7px 10px;white-space:nowrap}
+
   /* Rules */
   .field{margin-bottom:16px}
   .field label{display:block;font:600 11px/1 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
@@ -232,13 +296,55 @@
   <div class="view" id="v-business">
     <div class="view-h">Business</div>
     <p class="view-s" id="ohLine"></p>
-    <details class="sec" open style="border-top:0">
+    <details class="sec" open style="border-top:0" id="secCO">
+      <summary><div><span class="sec-title">Close-out</span><span class="sec-sub" id="coSub"></span></div><span class="chev">›</span></summary>
+      <div class="sec-body" id="coBody"></div>
+    </details>
+    <details class="sec" open>
       <summary><div><span class="sec-title">Office Hours</span><span class="sec-sub">Park it. Mark it done. Clears tomorrow.</span></div><span class="chev">›</span></summary>
       <div class="sec-body">
         <form class="add" id="officeForm"><input id="officeInput" placeholder="[CLIENT] Next thing to handle" autocomplete="off"><button class="btn" type="submit">Park</button></form>
         <div class="chips" id="officeTags"></div>
         <div class="day today"><div class="day-h"><span id="ohDay">Today</span><span id="officeCount"></span></div><div id="officeList"></div></div>
         <div class="foot"><span>Tap to mark ✓ · ☆ for Focus · × to remove</span><button class="link" id="officeClear">Clear done</button></div>
+      </div>
+    </details>
+    <details class="sec" open id="secPort">
+      <summary><div><span class="sec-title">The Portfolio</span><span class="sec-sub">Every venture, client or project. One direction.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body">
+        <div id="portBody"></div>
+        <button class="addlink" type="button" data-open="portForm">+ Add to portfolio</button>
+        <form class="formcard" id="portForm" hidden>
+          <input id="pName" placeholder="Name (e.g. Harbor & Co.)" maxlength="40" required>
+          <input id="pRole" placeholder="What it is (e.g. Retainer client)" maxlength="60">
+          <input id="pNext" placeholder="Next step" maxlength="90">
+          <div class="r"><button class="btn solid" type="submit">Add</button><button class="btn ghost" type="button" data-close="portForm">Cancel</button></div>
+        </form>
+      </div>
+    </details>
+    <details class="sec" open id="secMS">
+      <summary><div><span class="sec-title">Milestones &amp; Gates</span><span class="sec-sub">What is approaching. What requires approval.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body">
+        <div id="msBody"></div>
+        <button class="addlink" type="button" data-open="msForm">+ Add milestone</button>
+        <form class="formcard" id="msForm" hidden>
+          <input id="mTitle" placeholder="Milestone (e.g. Launch new offer)" maxlength="80" required>
+          <div class="r"><input id="mDate" type="date" required><label class="ck"><input type="checkbox" id="mGate"> Gate (needs approval)</label></div>
+          <div class="r" style="margin-top:8px"><button class="btn solid" type="submit">Add</button><button class="btn ghost" type="button" data-close="msForm">Cancel</button></div>
+        </form>
+      </div>
+    </details>
+    <details class="sec" id="secBrief">
+      <summary><div><span class="sec-title">Executive Briefs</span><span class="sec-sub">Your weekly and monthly readouts.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body">
+        <div id="briefBody"></div>
+        <button class="addlink" type="button" data-open="briefForm">+ Write a brief</button>
+        <form class="formcard" id="briefForm" hidden>
+          <input id="bTitle" placeholder="Title (e.g. Week 46 — what moved)" maxlength="80" required>
+          <input id="bSum" placeholder="One-line summary" maxlength="160">
+          <textarea id="bItems" placeholder="One point per line"></textarea>
+          <div class="r"><button class="btn solid" type="submit">Save brief</button><button class="btn ghost" type="button" data-close="briefForm">Cancel</button></div>
+        </form>
       </div>
     </details>
     <details class="sec" open id="secDec">
@@ -252,13 +358,30 @@
       <summary><div><span class="sec-title">Decision Record</span><span class="sec-sub">What we decided. How long it took.</span></div><span class="chev">›</span></summary>
       <div class="sec-body"><div class="wrapcard" id="decLog"></div></div>
     </details>
+    <details class="sec" id="secRh">
+      <summary><div><span class="sec-title">Operating Rhythm</span><span class="sec-sub">Daily · Weekly · Monthly · Quarterly · Annual</span></div><span class="chev">›</span></summary>
+      <div class="sec-body"><div id="rhBody"></div><p class="hint">Edit your rhythm in Rules.</p></div>
+    </details>
   </div>
 
   <!-- PERSONAL -->
   <div class="view" id="v-personal">
     <div class="view-h">Personal</div>
     <p class="view-s">Business is business. This is yours.</p>
-    <details class="sec" open style="border-top:0">
+    <details class="sec" open style="border-top:0" id="secUp">
+      <summary><div><span class="sec-title">Coming up</span><span class="sec-sub">Trips and plans · next 12 months</span></div><span class="chev">›</span></summary>
+      <div class="sec-body">
+        <div id="upBody"></div>
+        <button class="addlink" type="button" data-open="upForm">+ Add trip or plan</button>
+        <form class="formcard" id="upForm" hidden>
+          <input id="uTitle" placeholder="Where or what (e.g. Lisbon — anniversary)" maxlength="80" required>
+          <div class="r"><input id="uStart" type="date" required aria-label="Start date"><input id="uEnd" type="date" aria-label="End date"></div>
+          <div class="r" style="margin-top:8px"><label class="ck"><input type="checkbox" id="uTrip" checked> Travel</label></div>
+          <div class="r" style="margin-top:8px"><button class="btn solid" type="submit">Add</button><button class="btn ghost" type="button" data-close="upForm">Cancel</button></div>
+        </form>
+      </div>
+    </details>
+    <details class="sec" open>
       <summary><div><span class="sec-title">Today</span><span class="sec-sub">Protect the time that protects you.</span></div><span class="chev">›</span></summary>
       <div class="sec-body">
         <form class="add" id="personalForm"><input id="personalInput" placeholder="Walk · Call Mom · Read 20 min" autocomplete="off"><button class="btn" type="submit">Add</button></form>
@@ -310,6 +433,8 @@
           <div class="field"><label>Office hours start</label><input id="sStart" type="time"></div>
           <div class="field"><label>End</label><input id="sEnd" type="time"></div>
         </div>
+        <div class="field"><label>Close-out time</label><input id="sCO" type="time"><div class="h">A 5-minute end-of-day check.</div></div>
+        <div class="field"><label>Operating rhythm</label><textarea id="sRh"></textarea><div class="h">One per line: Label | What | Detail</div></div>
         <div class="field"><label>Business tags</label><input id="sTags"><div class="h">Comma-separated. Type [TAG] before a task, or tap a chip.</div></div>
         <div class="field"><label>Weekly habits</label><textarea id="sHabits"></textarea><div class="h">One per line: Name, times per week</div></div>
         <button class="btn solid" id="sSave" type="button">Save</button>
@@ -348,9 +473,9 @@
   <p class="tagline">One place. Three priorities. Less noise.</p>
   <div class="pts">
     <div><span>Focus</span>The next important action and your three priorities</div>
-    <div><span>Business</span>Park it. Mark it done. Log decisions.</div>
-    <div><span>Personal</span>Today's list and your weekly rhythm</div>
-    <div><span>Rules</span>Your theme, focus, hours, tags and habits</div>
+    <div><span>Business</span>Office Hours, close-out, portfolio, milestones, briefs, decisions</div>
+    <div><span>Personal</span>Trips and plans, today's list, weekly rhythm</div>
+    <div><span>Rules</span>Your theme, focus, hours, rhythm, tags and habits</div>
   </div>
   <div class="field"><label>What should Hub call you?</label><input id="wName" placeholder="First name or business" autocomplete="given-name"></div>
   <button class="btn solid" id="wBlank" type="button">Start my Hub</button>
@@ -369,6 +494,21 @@
   const toast = t => { const n = $("toast"); n.textContent = t; n.classList.add("on"); clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove("on"), 1700); };
   const todayLabel = () => new Date().toLocaleDateString(undefined, { weekday:"short", month:"short", day:"numeric" });
 
+  // ---------- dates ----------
+  const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const isoIn = n => dayKey(new Date(Date.now() + n*864e5));
+  const parseYmd = s => { const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(s||"")); return m ? new Date(+m[1], +m[2]-1, +m[3]) : null; };
+  const daysTo = d => Math.round((d - startOfToday()) / 864e5);
+  const fmtD = d => MON[d.getMonth()] + " " + d.getDate() + (d.getFullYear() !== new Date().getFullYear() ? ", " + d.getFullYear() : "");
+  const RHYTHM = [
+    ["Daily","Office Hours · Close-out","Park it in the morning. Mark it done before you stop."],
+    ["Weekly","Sunday evening checkup","Write the weekly brief. Set the week's top 3."],
+    ["Monthly","First Sunday review · 60 min","Portfolio walk · decisions owed · next month's top 3"],
+    ["Quarterly","90-Day Focus call","Check milestones and gates. Set no more than 3 priorities."],
+    ["Annual","Mid-December · half day","Theme for the year · go / pause / close calls"]
+  ];
+  const ALLMODS = { personal: true, mail: true, decisions: true, closeout: true, portfolio: true, milestones: true, briefs: true, rhythm: true, trips: true };
+
   // ---------- sample + blank ----------
   function seed() {
     const now = Date.now(), t = dayKey(), y = now - 864e5;
@@ -381,8 +521,31 @@
         start: "08:30", end: "09:30",
         tags: ["CLIENT","SALES","OPS","CONTENT","ADMIN","MAIL"],
         habits: [["Gym",3],["Walk",5],["Read",4],["No-phone AM",5]],
-        mods: { personal: true, mail: true, decisions: true }
+        closeout: "14:30", rhythm: RHYTHM.map(r => r.slice()),
+        mods: Object.assign({}, ALLMODS)
       },
+      ventures: [
+        { id: uid(), name: "Harbor & Co.", mono: "HC", role: "Retainer client · brand strategy", status: "active", phase: "Month 3 of 6", next: "Send revised scope" },
+        { id: uid(), name: "Lakeview", mono: "LV", role: "Retainer client · website rebuild", status: "risk", phase: "Kickoff", next: "Confirm speaking slot and timeline" },
+        { id: uid(), name: "Newsletter", mono: "NL", role: "Owned audience · 1,240 subscribers", status: "active", phase: "Weekly", next: "Draft Thursday issue" },
+        { id: uid(), name: "Course idea", mono: "CI", role: "Digital product", status: "paused", phase: "Parked until Q2", next: "" }
+      ],
+      milestones: [
+        { id: uid(), title: "Q4 estimated taxes filed", date: isoIn(-1), kind: "milestone" },
+        { id: uid(), title: "Lakeview kickoff call", date: isoIn(3), kind: "milestone" },
+        { id: uid(), title: "Harbor month-3 review", date: isoIn(9), kind: "milestone" },
+        { id: uid(), title: "Raise rates — go / no-go", date: isoIn(24), kind: "gate" },
+        { id: uid(), title: "New website live", date: isoIn(-8), kind: "milestone", doneAt: new Date(now - 864e5*8).toISOString() }
+      ],
+      briefs: [
+        { id: uid(), title: "Week 45 — what moved", kind: "Weekly", date: isoIn(-3), summary: "One retainer signed. Admin still eating mornings.", items: ["Signed Lakeview retainer (6 months)", "Harbor scope slipped 3 days — fixed", "Newsletter +38 subscribers", "Next week: protect Office Hours, decide on a VA"] },
+        { id: uid(), title: "October — monthly review", kind: "Monthly", date: isoIn(-10), summary: "Revenue on plan. Too many small clients.", items: ["November top 3: retainers, rates, admin", "Paused the course idea until Q2"] }
+      ],
+      trips: [
+        { id: uid(), title: "Mom's birthday dinner", start: isoIn(6), end: isoIn(6), travel: false },
+        { id: uid(), title: "Lisbon — anniversary trip", start: isoIn(18), end: isoIn(25), travel: true },
+        { id: uid(), title: "Austin — client offsite", start: isoIn(40), end: isoIn(42), travel: true }
+      ],
       office: [
         it("CLIENT","Send revised scope to Harbor & Co.", { star: true, ts: y }),
         it("SALES","Follow up on Lakeview proposal"),
@@ -418,9 +581,11 @@
         start: "08:30", end: "09:30",
         tags: ["WORK","CLIENT","ADMIN","MAIL"],
         habits: [["Move",3],["Read",3]],
-        mods: { personal: true, mail: false, decisions: true }
+        closeout: "14:30", rhythm: RHYTHM.map(r => r.slice()),
+        mods: Object.assign({}, ALLMODS, { mail: false })
       },
       office: [], personal: [], decisions: [], log: [],
+      ventures: [], milestones: [], briefs: [], trips: [],
       health: { week: weekKey(), counts: {} }, weekDone: { week: weekKey(), n: 0 }, parked: []
     };
   }
@@ -443,6 +608,7 @@
   const valid = s => s && typeof s === "object" && s.cfg && Array.isArray(s.office) && Array.isArray(s.personal) && Array.isArray(s.decisions) && Array.isArray(s.log);
   function fill(s) {
     const b = blankState(); s.cfg = Object.assign(b.cfg, s.cfg); s.cfg.mods = Object.assign(b.cfg.mods, s.cfg.mods);
+    ["ventures","milestones","briefs","trips"].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
     s.parked = s.parked || []; s.health = s.health || b.health; s.weekDone = s.weekDone || b.weekDone; s.v = 4; s.mode = s.mode || "blank"; return s;
   }
   function normalize(s) {
@@ -553,6 +719,12 @@
     if (state.cfg.mods.decisions && state.decisions.length) {
       const oldest = state.decisions.slice().sort((a,b) => a.ts - b.ts)[0];
       addExc("Decide", state.decisions.length + (state.decisions.length === 1 ? " decision owed. " : " decisions owed. ") + "Next: " + oldest.q, true, () => show("business"));
+    }
+    if (state.cfg.mods.milestones) {
+      const ms = state.milestones.filter(m => !m.doneAt && parseYmd(m.date)).map(m => Object.assign({}, m, { n: daysTo(parseYmd(m.date)) })).sort((a,b) => a.n - b.n);
+      const late = ms.filter(m => m.n < 0), soon = ms.filter(m => m.n >= 0 && m.n <= 14);
+      if (late.length) addExc("Overdue", late.length + " milestone" + (late.length > 1 ? "s" : "") + " past date: " + late.slice(0, 2).map(m => m.title).join(" · ") + ". Complete or re-date.", true, () => show("business"));
+      if (soon.length) { const g = soon[0]; addExc("Approaching", g.title + (g.kind === "gate" ? " (gate)" : "") + " · " + (g.n === 0 ? "today" : g.n === 1 ? "tomorrow" : "in " + g.n + " days") + (soon.length > 1 ? " (+" + (soon.length - 1) + " more within 14 days)" : ""), g.n <= 3, () => show("business")); }
     }
     if (state.cfg.mods.mail) {
       const alerts = MAIL.filter(m => m.kind === "alert").length, need = MAIL.filter(m => m.kind === "urgent" && !state.parked.includes(m.id)).length;
@@ -683,6 +855,197 @@
     $("restSub").textContent = fill("restList", "rest", "Empty.") + " newsletters, receipts and reminders";
   }
 
+  // ---------- close-out ----------
+  function coRows(list, mark, empty) {
+    const box = el("div");
+    if (!list.length) { box.appendChild(el("div", "empty", empty)); return box; }
+    list.forEach(it => {
+      const r = el("div", "item" + (mark === "✓" ? " done" : "")); r.style.cursor = "default";
+      r.appendChild(el("span", "tick", mark));
+      const t = el("span", "txt"); if (it.tag) t.appendChild(el("span", "tag", it.tag)); t.appendChild(document.createTextNode(it.text));
+      r.appendChild(t); box.appendChild(r);
+    });
+    return box;
+  }
+  function renderCloseout() {
+    const dow = new Date().getDay(), fri = dow === 5, wknd = dow === 0 || dow === 6;
+    $("coSub").textContent = fmt(state.cfg.closeout) + " · about 5 min · done when done";
+    const body = $("coBody"); body.textContent = "";
+    const card = el("div", "day today");
+    const h = el("div", "day-h"); h.appendChild(el("span", null, fri ? "Friday · mark ✓ only" : wknd ? "Weekend · Sunday checkup sets up the week" : "Your 5 minutes")); card.appendChild(h);
+    const steps = fri ? ["Mark ✓ anything finished. Then start the weekend."]
+      : ["Mark ✓ anything finished", "Decide or park what's owed (" + state.decisions.length + ")", "Star tomorrow's top 3"];
+    if (!wknd) steps.forEach((s, i) => { const r = el("div", "item"); r.style.cursor = "default"; r.append(el("span", "tick", fri ? "✓" : String(i + 1)), el("span", "txt", s)); card.appendChild(r); });
+    body.appendChild(card);
+    const t = dayKey();
+    const done = state.office.concat(state.personal).filter(i => i.done && i.doneOn === t);
+    const carry = state.office.filter(i => !i.done);
+    const top = priorities().map(p => p[1]);
+    body.appendChild(el("div", "sub-h", "Done today"));
+    body.appendChild(coRows(done, "✓", "Nothing marked ✓ yet."));
+    body.appendChild(el("div", "sub-h", "Carrying to tomorrow"));
+    body.appendChild(coRows(carry, "→", "Nothing to carry. Clean slate."));
+    const th = el("div", "sub-h", "Top 3 for tomorrow"); th.style.color = "var(--gold)"; body.appendChild(th);
+    body.appendChild(coRows(top, "○", "Star up to three tasks."));
+  }
+
+  // ---------- portfolio ----------
+  const STATUS = { active: ["var(--ok)","Active"], risk: ["var(--warn)","At risk"], blocked: ["var(--bad)","Blocked"], paused: ["var(--faint)","Paused"] };
+  const CYCLE = ["active","risk","blocked","paused"];
+  function renderPortfolio() {
+    const body = $("portBody"); body.textContent = "";
+    if (!state.ventures.length) { body.appendChild(el("div", "empty", "Add your ventures, clients or projects. One card each.")); return; }
+    const card = v => {
+      const c = el("div", "card" + (v.status === "paused" ? " parked" : ""));
+      const h = el("div", "card-h");
+      const l = el("div"); l.style.display = "flex"; l.style.alignItems = "center";
+      const nm = el("div"); nm.append(el("div", "card-name", v.name), el("div", "card-role", v.role || ""));
+      l.append(el("div", "mono", v.mono || v.name.slice(0, 2).toUpperCase()), nm);
+      const s = STATUS[v.status] || STATUS.active;
+      const p = el("button", "pill"); p.type = "button"; p.title = "Tap to change status";
+      const dot = el("i"); dot.style.background = s[0]; p.append(dot, document.createTextNode(s[1]));
+      p.onclick = () => { v.status = CYCLE[(CYCLE.indexOf(v.status) + 1) % CYCLE.length]; persist(); renderPortfolio(); };
+      h.append(l, p); c.appendChild(h);
+      const kv = el("dl", "kv");
+      if (v.phase) { const d = el("div"); d.append(el("dt", null, "Phase"), el("dd", null, v.phase)); kv.appendChild(d); }
+      const nd = el("div"); const ndd = el("dd", null, v.next || "—"); nd.append(el("dt", null, "Next"), ndd); kv.appendChild(nd);
+      c.appendChild(kv);
+      const f = el("div", "card-f");
+      const eb = el("button", "link", "Edit next"); eb.type = "button";
+      eb.onclick = () => {
+        const inp = el("input"); inp.value = v.next || ""; inp.maxLength = 90;
+        Object.assign(inp.style, { width: "100%", background: "var(--card2)", border: "1px solid var(--gold)", borderRadius: "8px", color: "var(--text)", padding: "6px 10px", font: "inherit", outline: "0" });
+        ndd.textContent = ""; ndd.appendChild(inp); inp.focus();
+        const save = () => { v.next = inp.value.trim(); persist(); renderPortfolio(); };
+        inp.onkeydown = e => { if (e.key === "Enter") save(); if (e.key === "Escape") renderPortfolio(); };
+        inp.onblur = save;
+      };
+      const rb = el("button", "link", "Remove"); rb.type = "button"; rb.style.color = "var(--faint)";
+      rb.onclick = e => confirmTap(e.currentTarget, "Remove", () => { state.ventures = state.ventures.filter(x => x.id !== v.id); persist(); renderPortfolio(); });
+      f.append(eb, rb); c.appendChild(f);
+      return c;
+    };
+    state.ventures.filter(v => v.status !== "paused").forEach(v => body.appendChild(card(v)));
+    const parked = state.ventures.filter(v => v.status === "paused");
+    if (parked.length) { body.appendChild(el("div", "sub-h", "Parking lot · paused, not deleted")); parked.forEach(v => body.appendChild(card(v))); }
+  }
+
+  // ---------- milestones ----------
+  function renderMilestones() {
+    const body = $("msBody"); body.textContent = "";
+    const ms = state.milestones.map(m => Object.assign({}, m, { d: parseYmd(m.date) })).filter(m => m.d).sort((a,b) => a.d - b.d);
+    if (!ms.length) { body.appendChild(el("div", "empty", "No milestones yet. Add the dates that matter.")); return; }
+    const open = ms.filter(m => !m.doneAt), done = ms.filter(m => m.doneAt).sort((a,b) => String(b.doneAt).localeCompare(String(a.doneAt)));
+    const row = m => {
+      const n = daysTo(m.d), isDone = !!m.doneAt;
+      const r = el("div", "ms" + (m.kind === "gate" ? " gate" : "") + (isDone ? " past" : "") + (!isDone && n < 0 ? " late" : ""));
+      const dt = el("div", "ms-date"); dt.append(el("b", null, String(m.d.getDate())), el("span", null, MON[m.d.getMonth()])); r.appendChild(dt);
+      const when = isDone ? "✓ Completed " + fmtD(new Date(m.doneAt)) : n === 0 ? "Today" : n === 1 ? "Tomorrow" : n > 0 ? "In " + n + " days" : (-n) + " day" + (n === -1 ? "" : "s") + " overdue";
+      const b = el("div", "ms-body"); b.append(el("div", "ms-t", m.title), el("div", "ms-m", when + (m.kind === "gate" ? " · Gate" : ""))); r.appendChild(b);
+      const btn = el("button", "ms-btn", isDone ? "Undo" : "Complete"); btn.type = "button";
+      btn.onclick = e => {
+        const it = state.milestones.find(x => x.id === m.id); if (!it) return;
+        if (isDone) { delete it.doneAt; persist(); renderAll(); return; }
+        confirmTap(e.currentTarget, "Complete", () => { it.doneAt = new Date().toISOString(); persist(); renderAll(); toast("Milestone complete"); });
+      };
+      const x = el("button", "ib", "×"); x.type = "button"; x.setAttribute("aria-label", "Remove"); x.style.alignSelf = "center";
+      x.onclick = () => { state.milestones = state.milestones.filter(y => y.id !== m.id); persist(); renderAll(); };
+      r.append(btn, x);
+      return r;
+    };
+    const wrap = el("div", "wrapcard");
+    if (open.length) open.forEach(m => wrap.appendChild(row(m))); else wrap.appendChild(el("div", "empty", "All milestones complete."));
+    body.appendChild(wrap);
+    if (done.length) { body.appendChild(el("div", "sub-h", "Done")); const w2 = el("div", "wrapcard"); done.slice(0, 10).forEach(m => w2.appendChild(row(m))); body.appendChild(w2); }
+  }
+
+  // ---------- briefs ----------
+  function renderBriefs() {
+    const body = $("briefBody"); body.textContent = "";
+    const bs = state.briefs.slice().sort((a,b) => String(b.date).localeCompare(String(a.date)));
+    if (!bs.length) { body.appendChild(el("div", "empty", "No briefs yet. Write one each week: what moved, what's next.")); return; }
+    bs.forEach((b, i) => {
+      const d = el("details", "brief"); if (i === 0) d.open = true;
+      const s = el("summary"); const dd = parseYmd(b.date);
+      s.append(el("div", "bt", b.title), el("div", "bm", (b.kind || "Brief") + (dd ? " · " + fmtD(dd) : "")));
+      const bb = el("div", "bb");
+      if (b.summary) bb.appendChild(el("div", null, b.summary));
+      if (b.items && b.items.length) { const ul = el("ul"); b.items.forEach(x => ul.appendChild(el("li", null, x))); bb.appendChild(ul); }
+      const rm = el("button", "link", "Remove"); rm.type = "button"; rm.style.cssText = "color:var(--faint);margin-top:10px";
+      rm.onclick = e => confirmTap(e.currentTarget, "Remove", () => { state.briefs = state.briefs.filter(x => x.id !== b.id); persist(); renderBriefs(); });
+      bb.appendChild(rm);
+      d.append(s, bb); body.appendChild(d);
+    });
+  }
+
+  // ---------- rhythm ----------
+  function renderRhythm() {
+    const body = $("rhBody"); body.textContent = "";
+    const w = el("div", "wrapcard");
+    if (!state.cfg.rhythm.length) w.appendChild(el("div", "empty", "No rhythm set. Add it in Rules."));
+    state.cfg.rhythm.forEach(([a, b, c]) => {
+      const r = el("div", "rh"); r.appendChild(el("b", null, a));
+      const d = el("div", null, b || ""); if (c) { d.appendChild(el("br")); d.appendChild(el("span", null, c)); }
+      r.appendChild(d); w.appendChild(r);
+    });
+    body.appendChild(w);
+  }
+
+  // ---------- coming up ----------
+  function countdown(s, e) {
+    const a = daysTo(s), b = daysTo(e);
+    if (a <= 0 && b >= 0) return a === b ? "Today" : "Now · " + (b === 0 ? "ends today" : b + "d left");
+    if (a === 1) return "Tomorrow";
+    if (a < 14) return "In " + a + " days";
+    if (a < 60) return "In " + Math.round(a / 7) + " weeks";
+    return "In " + Math.round(a / 30) + " months";
+  }
+  function renderComingUp() {
+    const body = $("upBody"); body.textContent = "";
+    const list = state.trips.map(t => Object.assign({}, t, { s: parseYmd(t.start), e: parseYmd(t.end) || parseYmd(t.start) }))
+      .filter(t => t.s && daysTo(t.e) >= 0 && daysTo(t.s) <= 366).sort((a,b) => a.s - b.s);
+    if (!list.length) { body.appendChild(el("div", "empty", "Nothing on the calendar. Plan something.")); return; }
+    list.forEach(t => {
+      const c = el("div", "trip" + (daysTo(t.s) <= 0 ? " now" : ""));
+      const h = el("div", "trip-h");
+      const parts = t.title.split(/\s+[—–-]\s+/);
+      const l = el("div"); l.append(el("div", "trip-t", (t.travel ? "✈️ " : "📅 ") + parts[0]), el("div", "trip-d", t.e > t.s ? fmtD(t.s) + " – " + fmtD(t.e) : fmtD(t.s)));
+      h.append(l, el("span", "cd", countdown(t.s, t.e)));
+      c.appendChild(h);
+      if (parts.length > 1) c.appendChild(el("div", "trip-s", parts.slice(1).join(" — ")));
+      const f = el("div", "card-f"); const rb = el("button", "link", "Remove"); rb.type = "button"; rb.style.color = "var(--faint)";
+      rb.onclick = e => confirmTap(e.currentTarget, "Remove", () => { state.trips = state.trips.filter(x => x.id !== t.id); persist(); renderComingUp(); });
+      f.appendChild(rb); c.appendChild(f);
+      body.appendChild(c);
+    });
+  }
+
+  // ---------- forms for new sections ----------
+  document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => { const f = $(b.dataset.open); f.hidden = false; b.hidden = true; const i = f.querySelector("input"); if (i) i.focus(); });
+  const closeForm = id => { const f = $(id); f.reset(); f.hidden = true; const b = document.querySelector('[data-open="' + id + '"]'); if (b) b.hidden = false; };
+  document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => closeForm(b.dataset.close));
+  $("portForm").onsubmit = e => {
+    e.preventDefault(); const name = $("pName").value.trim(); if (!name) return;
+    state.ventures.push({ id: uid(), name, mono: name.replace(/[^A-Za-z0-9 ]/g, "").split(/\s+/).filter(Boolean).map(w => w[0]).join("").slice(0, 2).toUpperCase() || name.slice(0, 2).toUpperCase(), role: $("pRole").value.trim(), status: "active", phase: "", next: $("pNext").value.trim() });
+    persist(); closeForm("portForm"); renderPortfolio(); toast("Added to portfolio");
+  };
+  $("msForm").onsubmit = e => {
+    e.preventDefault(); const title = $("mTitle").value.trim(), date = $("mDate").value; if (!title || !date) return;
+    state.milestones.push({ id: uid(), title, date, kind: $("mGate").checked ? "gate" : "milestone" });
+    persist(); closeForm("msForm"); renderAll(); toast("Milestone added");
+  };
+  $("briefForm").onsubmit = e => {
+    e.preventDefault(); const title = $("bTitle").value.trim(); if (!title) return;
+    state.briefs.push({ id: uid(), title, kind: "Brief", date: dayKey(), summary: $("bSum").value.trim(), items: $("bItems").value.split("\n").map(s => s.trim()).filter(Boolean) });
+    persist(); closeForm("briefForm"); renderBriefs(); toast("Brief saved");
+  };
+  $("upForm").onsubmit = e => {
+    e.preventDefault(); const title = $("uTitle").value.trim(), start = $("uStart").value; if (!title || !start) return;
+    let end = $("uEnd").value || start; if (end < start) end = start;
+    state.trips.push({ id: uid(), title, start, end, travel: $("uTrip").checked });
+    persist(); closeForm("upForm"); renderComingUp(); toast("Added to Coming up");
+  };
+
   // ---------- counts ----------
   function setCt(id, n, alert) { const e = $(id); if (n > 0) { e.textContent = n; e.hidden = false; e.className = "ct" + (alert ? " alert" : ""); } else e.hidden = true; }
   function renderCounts() {
@@ -694,10 +1057,22 @@
   }
 
   // ---------- rules ----------
-  const MODS = [["personal","Personal","Today's list + weekly rhythm"],["decisions","Decisions","Decisions owed + Decision Record"],["mail","Mail","Stage 1 triage (sample emails)"]];
+  const MODS = [
+    ["closeout","Close-out","5-minute end-of-day check"],
+    ["portfolio","The Portfolio","Ventures, clients, projects"],
+    ["milestones","Milestones & Gates","Dates that matter + approvals"],
+    ["briefs","Executive Briefs","Weekly and monthly readouts"],
+    ["decisions","Decisions","Decisions owed + Decision Record"],
+    ["rhythm","Operating Rhythm","Daily to annual cadence"],
+    ["personal","Personal","Today's list + weekly rhythm"],
+    ["trips","Coming up","Trips and plans"],
+    ["mail","Mail","Stage 1 triage (sample emails)"]
+  ];
   function fillSetup() {
     $("sName").value = state.cfg.name; $("sTheme").value = state.cfg.theme; $("sTagline").value = state.cfg.tagline; $("sFocus").value = state.cfg.focus;
     $("sStart").value = state.cfg.start; $("sEnd").value = state.cfg.end;
+    $("sCO").value = state.cfg.closeout;
+    $("sRh").value = state.cfg.rhythm.map(r => r.filter(Boolean).join(" | ")).join("\n");
     $("sTags").value = state.cfg.tags.join(", ");
     $("sHabits").value = state.cfg.habits.map(([n, g]) => n + ", " + g).join("\n");
     const box = $("mods"); box.textContent = "";
@@ -715,6 +1090,8 @@
     state.cfg.focus = $("sFocus").value.trim();
     if ($("sStart").value) state.cfg.start = $("sStart").value;
     if ($("sEnd").value) state.cfg.end = $("sEnd").value;
+    if ($("sCO").value) state.cfg.closeout = $("sCO").value;
+    state.cfg.rhythm = $("sRh").value.split("\n").map(l => l.split("|").map(s => s.trim())).filter(p => p[0]).map(p => [p[0].slice(0, 14), (p[1] || "").slice(0, 90), (p.slice(2).join(" | ") || "").slice(0, 140)]).slice(0, 8);
     const tags = $("sTags").value.split(",").map(s => s.trim().toUpperCase().replace(/[\[\]]/g, "")).filter(Boolean).slice(0, 12);
     if (tags.length) state.cfg.tags = tags;
     state.cfg.habits = $("sHabits").value.split("\n").map(l => l.split(",")).filter(p => p[0] && p[0].trim()).map(p => [p[0].trim().slice(0, 18), Math.max(1, Math.min(7, parseInt(p[1], 10) || 3))]).slice(0, 8);
@@ -726,7 +1103,9 @@
     $("tabMail").style.display = state.cfg.mods.mail ? "" : "none";
     const n = 2 + (state.cfg.mods.personal ? 1 : 0) + (state.cfg.mods.mail ? 1 : 0);
     document.querySelector(".tabs").style.gridTemplateColumns = "repeat(" + n + ",1fr)";
-    ["secDec","secLog"].forEach(id => $(id).style.display = state.cfg.mods.decisions ? "" : "none");
+    const m = state.cfg.mods;
+    [["secDec","decisions"],["secLog","decisions"],["secCO","closeout"],["secPort","portfolio"],["secMS","milestones"],["secBrief","briefs"],["secRh","rhythm"],["secUp","trips"]]
+      .forEach(([id, k]) => $(id).style.display = m[k] ? "" : "none");
   }
 
   // ---------- start over / first use ----------
@@ -816,7 +1195,10 @@
   $("rulesBtn").onclick = () => show($("v-setup").classList.contains("on") ? "focus" : "setup");
   window.addEventListener("hashchange", () => show(location.hash.slice(1)));
 
-  function renderAll() { renderMast(); renderList("office"); renderList("personal"); renderHealth(); renderDecisions(); renderMail(); renderFocus(); renderCounts(); }
+  function renderAll() {
+    renderMast(); renderList("office"); renderList("personal"); renderHealth(); renderDecisions(); renderMail(); renderFocus();
+    renderCloseout(); renderPortfolio(); renderMilestones(); renderBriefs(); renderRhythm(); renderComingUp(); renderCounts();
+  }
   applyMods(); renderTags(); renderAll(); ohStatus(); chrome();
   if (firstRun) $("welcome").classList.add("on");
   setInterval(() => { ohStatus(); renderFocus(); }, 60000);
