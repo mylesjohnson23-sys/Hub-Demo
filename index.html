@@ -228,29 +228,66 @@
   .row2{display:flex;gap:8px;flex-wrap:wrap}
 
   /* Banners, toast, welcome */
-  .demo{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;color:var(--muted);background:var(--card2);border:1px dashed var(--line);border-radius:10px;padding:9px 12px;margin-bottom:18px}
-  .demo b{color:var(--gold);font-weight:600}
+  .demo{background:linear-gradient(180deg,rgba(182,154,100,.16),rgba(182,154,100,.06));border:1px solid rgba(182,154,100,.45);border-radius:var(--r);padding:12px 14px;margin-bottom:18px}
+  .demo-t{display:flex;align-items:center;gap:8px;font:600 11px/1 Inter,system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
+  .demo-t i{width:7px;height:7px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 4px rgba(182,154,100,.2)}
+  .demo p{margin:6px 0 10px;font-size:13.5px;color:var(--muted)}
+  .demo .row2 .btn{flex:1;min-height:42px}
+  .mine{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;color:var(--faint);margin:-8px 2px 16px}
+  /* Sheets + modal */
+  .scrim{position:fixed;inset:0;background:rgba(6,10,14,.6);z-index:40;display:none}
+  .scrim.on{display:block}
+  .sheet{position:fixed;left:0;right:0;bottom:0;z-index:45;display:none;justify-content:center;padding:0 10px calc(10px + env(safe-area-inset-bottom))}
+  .sheet.on{display:flex}
+  .sheet .in{width:100%;max-width:560px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px 18px 18px;box-shadow:0 -12px 40px rgba(0,0,0,.45)}
+  .sheet .theme{font-size:24px;text-transform:none;margin:10px 0 6px}
+  .sheet .tagline{font-size:14px}
+  .sheet .btn{width:100%;margin-top:10px}
+  .sheet .link.alt{display:block;margin:14px auto 2px}
+  .sheet small{display:block;color:var(--faint);font-size:12px;margin-top:12px;text-align:center}
+  .sheet .field{margin:16px 0 4px}
+  .tour .in{border-color:var(--gold)}
+  .tour-top{display:flex;justify-content:space-between;align-items:center}
+  .dots{display:flex;gap:5px}
+  .dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}
+  .dots i.on{background:var(--gold)}
+  .tour h3{font:700 19px/1.25 Manrope,Inter,system-ui,sans-serif;margin:12px 0 6px}
+  .tour p{margin:0;font-size:14.5px;color:#DDE2E6}
+  .tour .r{display:flex;gap:8px;margin-top:14px}
+  .tour .r .btn{margin-top:0;flex:1}
+  .spot{scroll-margin-top:96px;scroll-margin-bottom:300px;position:relative;z-index:1;outline:2px solid var(--gold);outline-offset:4px;border-radius:12px;box-shadow:0 0 0 8px rgba(182,154,100,.12);transition:outline-color .2s}
+  body.touring .wrap{padding-bottom:300px}
+  .modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;padding:20px}
+  .modal.on{display:flex}
+  .modal .in{width:100%;max-width:420px;background:var(--card);border:1px solid rgba(216,121,121,.5);border-radius:16px;padding:20px 18px}
+  .modal h3{font:700 19px/1.25 Manrope,Inter,system-ui,sans-serif;margin:0 0 8px}
+  .modal p{margin:0 0 6px;font-size:14px;color:var(--muted)}
+  .modal input{width:100%;background:var(--card2);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:16px;padding:10px 12px;outline:0;margin:10px 0 4px;letter-spacing:.08em}
+  .modal input:focus{border-color:var(--bad)}
+  .modal .r{display:flex;gap:8px;margin-top:12px}
+  .modal .r .btn{flex:1}
+  .btn.danger{border-color:var(--bad);color:var(--bad)}
+  .btn.danger.solid{background:var(--bad);color:var(--bg)}
+  .btn:disabled{opacity:.4;cursor:not-allowed}
   .warnbar{display:none;font-size:12.5px;color:var(--bad);border:1px solid rgba(216,121,121,.5);border-radius:10px;padding:9px 12px;margin-bottom:16px}
   .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--text);color:var(--bg);font:500 14px Inter,system-ui,sans-serif;padding:9px 16px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
   .toast.on{opacity:1}
   footer{margin-top:30px;color:var(--faint);font-size:12px;text-align:center}
-  .welcome{position:fixed;inset:0;background:var(--bg);z-index:40;display:none;justify-content:center;overflow:auto}
-  .welcome.on{display:flex}
-  .welcome .in{width:100%;max-width:560px;padding:56px 22px 40px}
-  .welcome .theme{font-size:32px;text-transform:none;margin:14px 0 8px}
-  .welcome .pts{margin:22px 0 26px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:4px 16px}
-  .welcome .pts div{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14.5px}
-  .welcome .pts div:first-child{border-top:0}
-  .welcome .pts span{flex:none;width:86px;font:600 11px/1.9 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
-  .welcome .btn{width:100%;margin-top:6px}
-  .welcome .alt{display:block;margin:16px auto 0}
-  .welcome small{display:block;color:var(--faint);font-size:12px;margin-top:22px;text-align:center}
+  .pts{margin:16px 0 4px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:2px 14px}
+  .pts div{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:14px}
+  .pts div:first-child{border-top:0}
+  .pts span{flex:none;width:78px;font:600 10.5px/2 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="warnbar" id="noSave">This browser isn't saving. Use Rules → Backup before you close it.</div>
-  <div class="demo" id="demoBar"><span><b>Sample data</b> · explore freely</span><button class="link" id="goBlank">Start blank →</button></div>
+  <div class="demo" id="demoBar">
+    <div class="demo-t"><i></i>Live demo · sample company</div>
+    <p>You're inside a working Hub for a fictional studio. Tap, star, decide — nothing here touches your own data.</p>
+    <div class="row2"><button class="btn solid" id="tourBtn" type="button">Explore Demo</button><button class="btn" id="mineBtn" type="button">Make It Mine</button></div>
+  </div>
+  <div class="mine" id="mineBar"><span>Your Hub · saved on this device</span><button class="link" id="viewDemo" type="button">View demo →</button></div>
 
   <header class="mast">
     <div class="mast-top"><div class="eyebrow" id="mEyebrow">Your Hub</div><button class="rules-link" id="rulesBtn" type="button">Rules</button></div>
@@ -445,8 +482,9 @@
       <div class="sec-body"><div class="wrapcard" id="mods"></div></div>
     </details>
     <details class="sec backup" open>
-      <summary><div><span class="sec-title">Backup</span><span class="sec-sub">Your data lives only on this device.</span></div><span class="chev">›</span></summary>
-      <div class="sec-body">
+      <summary><div><span class="sec-title">Backup</span><span class="sec-sub" id="bSub">Your data lives only on this device.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body" id="bDemoNote" hidden><div class="note">Backup saves <b>your</b> Hub, not the demo. Tap <b>Make It Mine</b> to start one.</div></div>
+      <div class="sec-body" id="bBody">
         <div class="row2">
           <button class="btn" id="bExport" type="button">Export backup</button>
           <button class="btn ghost" id="bCopy" type="button">Copy</button>
@@ -456,9 +494,16 @@
         <button class="btn ghost" id="bImport" type="button">Restore from pasted backup</button>
       </div>
     </details>
-    <details class="sec">
-      <summary><div><span class="sec-title">Start Over</span><span class="sec-sub">Replaces everything on this device.</span></div><span class="chev">›</span></summary>
-      <div class="sec-body"><div class="row2"><button class="btn ghost" id="sBlank" type="button">Start blank</button><button class="btn ghost" id="sSample" type="button">Load sample data</button></div><p class="hint">Export first if you want to keep what's here.</p></div>
+    <details class="sec" open id="secDemoCtl">
+      <summary><div><span class="sec-title">Demo</span><span class="sec-sub">Sample data. Separate from your Hub.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body"><div class="row2"><button class="btn" id="sMine" type="button">Make It Mine</button><button class="btn ghost" id="sResetDemo" type="button">Reset demo</button></div><p class="hint">Reset restores the sample company. Your own Hub is never affected.</p></div>
+    </details>
+    <details class="sec" id="secMineCtl">
+      <summary><div><span class="sec-title">Workspace</span><span class="sec-sub">Your Hub and the demo are kept apart.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body">
+        <div class="row2"><button class="btn ghost" id="sDemo" type="button">View demo</button><button class="btn danger" id="sClear" type="button">Clear my Hub…</button></div>
+        <p class="hint">Viewing the demo leaves your Hub untouched. Clearing asks for confirmation — export a backup first.</p>
+      </div>
     </details>
   </div>
 
@@ -467,20 +512,49 @@
 
 <div class="toast" id="toast"></div>
 
-<div class="welcome" id="welcome"><div class="in">
+<div class="scrim" id="scrim"></div>
+
+<!-- First open: sits over a live, populated Hub -->
+<div class="sheet" id="intro"><div class="in">
   <div class="eyebrow">Hub</div>
   <div class="theme">Your Hub. Your Rules. Your Day.</div>
-  <p class="tagline">One place. Three priorities. Less noise.</p>
+  <p class="tagline">This is a working Hub for Reed Studio, a fictional design studio. One week in, mid-flight.</p>
   <div class="pts">
-    <div><span>Focus</span>The next important action and your three priorities</div>
-    <div><span>Business</span>Office Hours, close-out, portfolio, milestones, briefs, decisions</div>
-    <div><span>Personal</span>Trips and plans, today's list, weekly rhythm</div>
-    <div><span>Rules</span>Your theme, focus, hours, rhythm, tags and habits</div>
+    <div><span>Focus</span>The one next action, three priorities, what needs you</div>
+    <div><span>Business</span>Office Hours, portfolio, milestones, decisions</div>
+    <div><span>Personal</span>Trips, today's list, weekly rhythm</div>
   </div>
-  <div class="field"><label>What should Hub call you?</label><input id="wName" placeholder="First name or business" autocomplete="given-name"></div>
-  <button class="btn solid" id="wBlank" type="button">Start my Hub</button>
-  <button class="link alt" id="wSample" type="button">Look around with sample data first</button>
-  <small>Everything stays on this device. Nothing is sent anywhere.</small>
+  <button class="btn solid" id="iTour" type="button">Explore Demo · 60-second tour</button>
+  <button class="btn" id="iMine" type="button">Make It Mine</button>
+  <button class="link alt" id="iLook" type="button">Just look around</button>
+  <small>Nothing to set up. Nothing sent anywhere.</small>
+</div></div>
+
+<!-- Make It Mine -->
+<div class="sheet" id="mine"><div class="in">
+  <div class="eyebrow">Make It Mine</div>
+  <div class="theme" id="mineH">Start your own Hub</div>
+  <p class="tagline" id="mineP">A clean workspace, saved only on this device. The demo stays available — switching never touches your data.</p>
+  <div class="field" id="mineField"><label>What should Hub call you?</label><input id="wName" placeholder="First name or business" autocomplete="given-name" maxlength="40"></div>
+  <button class="btn solid" id="wBlank" type="button">Create my Hub</button>
+  <button class="link alt" id="wCancel" type="button">Back to the demo</button>
+</div></div>
+
+<!-- Guided tour -->
+<div class="sheet tour" id="tour"><div class="in">
+  <div class="tour-top"><div class="dots" id="tDots"></div><button class="link" id="tEnd" type="button" style="color:var(--faint)">End tour</button></div>
+  <h3 id="tH"></h3>
+  <p id="tP"></p>
+  <div class="r"><button class="btn ghost" id="tBack" type="button">Back</button><button class="btn solid" id="tNext" type="button">Next</button></div>
+</div></div>
+
+<!-- Destructive confirmation -->
+<div class="modal" id="confirm" role="dialog" aria-modal="true" aria-labelledby="cH"><div class="in">
+  <h3 id="cH">Clear your Hub?</h3>
+  <p id="cP"></p>
+  <p>Type <b style="color:var(--text)">CLEAR</b> to confirm.</p>
+  <input id="cIn" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="Type CLEAR to confirm">
+  <div class="r"><button class="btn ghost" id="cNo" type="button">Cancel</button><button class="btn danger solid" id="cYes" type="button" disabled>Clear</button></div>
 </div></div>
 
 <script>
@@ -514,7 +588,7 @@
     const now = Date.now(), t = dayKey(), y = now - 864e5;
     const it = (tag, text, o = {}) => Object.assign({ id: uid(), tag, text, done: false, star: false, ts: now - Math.random()*1e6 }, o);
     return {
-      v: 4, mode: "sample",
+      v: 5, mode: "sample", seededOn: t,
       cfg: {
         name: "Reed Studio", theme: "Build 2027", tagline: "Fewer clients. Better work. Calmer weeks.",
         focus: "Land two retainers. Cut admin in half.",
@@ -527,6 +601,7 @@
       ventures: [
         { id: uid(), name: "Harbor & Co.", mono: "HC", role: "Retainer client · brand strategy", status: "active", phase: "Month 3 of 6", next: "Send revised scope" },
         { id: uid(), name: "Lakeview", mono: "LV", role: "Retainer client · website rebuild", status: "risk", phase: "Kickoff", next: "Confirm speaking slot and timeline" },
+        { id: uid(), name: "Northline Coffee", mono: "NC", role: "Project client · packaging refresh", status: "blocked", phase: "Waiting on print quote", next: "Chase printer for final quote" },
         { id: uid(), name: "Newsletter", mono: "NL", role: "Owned audience · 1,240 subscribers", status: "active", phase: "Weekly", next: "Draft Thursday issue" },
         { id: uid(), name: "Course idea", mono: "CI", role: "Digital product", status: "paused", phase: "Parked until Q2", next: "" }
       ],
@@ -534,6 +609,7 @@
         { id: uid(), title: "Q4 estimated taxes filed", date: isoIn(-1), kind: "milestone" },
         { id: uid(), title: "Lakeview kickoff call", date: isoIn(3), kind: "milestone" },
         { id: uid(), title: "Harbor month-3 review", date: isoIn(9), kind: "milestone" },
+        { id: uid(), title: "Northline packaging to print", date: isoIn(12), kind: "gate" },
         { id: uid(), title: "Raise rates — go / no-go", date: isoIn(24), kind: "gate" },
         { id: uid(), title: "New website live", date: isoIn(-8), kind: "milestone", doneAt: new Date(now - 864e5*8).toISOString() }
       ],
@@ -552,11 +628,16 @@
         it("OPS","Renew domain + check site backups", { ts: y }),
         it("CONTENT","Draft Thursday newsletter", { star: true }),
         it("ADMIN","Q4 estimated tax payment", { done: true, doneOn: t }),
+        it("CLIENT","Northline — chase print quote", { ts: y }),
+        it("SALES","Send case study to two warm leads"),
+        it("CLIENT","Harbor — approve moodboard v2", { done: true, doneOn: t }),
         it("MAIL","Priya — invoice question")
       ],
       personal: [
         it("","30-min walk after lunch", { star: true }),
         it("","Call Mom"),
+        it("","Pick up dry cleaning"),
+        it("","Book Lisbon dinner reservation"),
         it("","Book dentist", { done: true, doneOn: t })
       ],
       decisions: [
@@ -565,16 +646,18 @@
         { id: uid(), q: "Say yes to the Lakeview speaking slot?", ts: now - 864e5*1 }
       ],
       log: [
-        { id: uid(), q: "Take on the Lakeview retainer?", a: "Yes — 6-month term, revisit in March.", ts: now - 864e5*9, at: now - 864e5*6 }
+        { id: uid(), q: "Take on the Lakeview retainer?", a: "Yes — 6-month term, revisit in March.", ts: now - 864e5*9, at: now - 864e5*6 },
+        { id: uid(), q: "Pause the course idea?", a: "Yes — park until Q2. Retainers first.", ts: now - 864e5*14, at: now - 864e5*12 },
+        { id: uid(), q: "Switch invoicing tools?", a: "No — not worth the migration this year.", ts: now - 864e5*20, at: now - 864e5*19 }
       ],
-      health: { week: weekKey(), counts: { "Gym": 2, "Walk": 3, "Read": 1 } },
-      weekDone: { week: weekKey(), n: 11 },
+      health: { week: weekKey(), counts: { "Gym": 2, "Walk": 3, "Read": 2, "No-phone AM": 4 } },
+      weekDone: { week: weekKey(), n: 14 },
       parked: []
     };
   }
   function blankState(name) {
     return {
-      v: 4, mode: "blank",
+      v: 5, mode: "blank",
       cfg: {
         name: name || "Your Hub", theme: "Your year", tagline: "One place. Three priorities. Less noise.",
         focus: "Name the one thing the next 90 days are for.",
@@ -602,14 +685,19 @@
   ];
 
   // ---------- storage ----------
-  const LS = "hub-demo-v4";
+  // Two stores, never shared. Demo = sample company (resettable). Mine = the visitor's own Hub.
+  const K = { demo: "hub-demo-sample-v5", mine: "hub-mine-v1", active: "hub-active", seen: "hub-intro-seen" };
   let state, firstRun = false, canSave = true;
   try { const k = "__hub_t"; localStorage.setItem(k, "1"); localStorage.removeItem(k); } catch (e) { canSave = false; }
+  const lsGet = k => { try { return canSave ? localStorage.getItem(k) : null; } catch (e) { return null; } };
+  const lsSet = (k, v) => { try { if (canSave) localStorage.setItem(k, v); } catch (e) {} };
+  const lsDel = k => { try { if (canSave) localStorage.removeItem(k); } catch (e) {} };
+  const isDemo = () => state && state.mode === "sample";
   const valid = s => s && typeof s === "object" && s.cfg && Array.isArray(s.office) && Array.isArray(s.personal) && Array.isArray(s.decisions) && Array.isArray(s.log);
   function fill(s) {
     const b = blankState(); s.cfg = Object.assign(b.cfg, s.cfg); s.cfg.mods = Object.assign(b.cfg.mods, s.cfg.mods);
     ["ventures","milestones","briefs","trips"].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
-    s.parked = s.parked || []; s.health = s.health || b.health; s.weekDone = s.weekDone || b.weekDone; s.v = 4; s.mode = s.mode || "blank"; return s;
+    s.parked = s.parked || []; s.health = s.health || b.health; s.weekDone = s.weekDone || b.weekDone; s.v = 5; s.mode = s.mode || "blank"; return s;
   }
   function normalize(s) {
     const t = dayKey();
@@ -619,12 +707,28 @@
     if (!s.weekDone || s.weekDone.week !== weekKey()) s.weekDone = { week: weekKey(), n: 0 };
     return s;
   }
-  try {
-    const raw = canSave && (localStorage.getItem(LS) || localStorage.getItem("hub-demo-v3"));
-    if (raw) { const p = JSON.parse(raw); if (valid(p)) state = normalize(fill(p)); }
-  } catch (e) {}
-  if (!state) { state = seed(); firstRun = true; }
-  const persist = () => { try { localStorage.setItem(LS, JSON.stringify(state)); } catch (e) {} };
+  const readStore = k => { try { const r = lsGet(k); if (!r) return null; const p = JSON.parse(r); return valid(p) ? normalize(fill(p)) : null; } catch (e) { return null; } };
+  const hasMine = () => !!readStore(K.mine);
+
+  // One-time migration from v3/v4 single-slot builds: a personal Hub moves to "mine"; old sample data is discarded.
+  ["hub-demo-v4", "hub-demo-v3"].forEach(old => {
+    const r = lsGet(old); if (!r) return;
+    try {
+      const p = JSON.parse(r);
+      if (valid(p) && p.mode !== "sample" && !lsGet(K.mine)) { p.mode = "blank"; lsSet(K.mine, JSON.stringify(p)); lsSet(K.active, "mine"); }
+    } catch (e) {}
+    if (lsGet(K.mine) || !/"mode"\s*:\s*"blank"/.test(r)) lsDel(old); // never delete an unmigrated personal Hub
+  });
+
+  // Demo always opens "today": reseed if it was built on an earlier day.
+  function demoState() {
+    const d = readStore(K.demo);
+    if (d && d.seededOn === dayKey()) return d;
+    const s = seed(); lsSet(K.demo, JSON.stringify(s)); return s;
+  }
+  if (lsGet(K.active) === "mine") state = readStore(K.mine);
+  if (!state) { state = demoState(); firstRun = !lsGet(K.seen); }
+  const persist = () => lsSet(isDemo() ? K.demo : K.mine, JSON.stringify(state));
 
   // ---------- masthead ----------
   function renderMast() {
@@ -1119,23 +1223,118 @@
     btn.dataset.arm = "1"; btn.textContent = "Tap again to confirm";
     setTimeout(() => { if (btn.dataset.arm) { delete btn.dataset.arm; btn.textContent = label; } }, 3500);
   }
-  $("sBlank").onclick = e => confirmTap(e.currentTarget, "Start blank", () => { load(blankState(state.mode === "blank" ? state.cfg.name : ""), "Fresh start"); show("focus"); });
-  $("sSample").onclick = e => confirmTap(e.currentTarget, "Load sample data", () => { load(seed(), "Sample data loaded"); show("focus"); });
-  $("goBlank").onclick = () => { $("wName").value = ""; $("welcome").classList.add("on"); };
+  // ---------- workspaces: demo ↔ mine ----------
+  function openSheet(id) { ["intro","mine","tour"].forEach(s => $(s).classList.toggle("on", s === id)); $("scrim").classList.toggle("on", id === "intro" || id === "mine"); }
+  const closeSheets = () => openSheet(null);
+  function goDemo(msg) {
+    // Switching never writes to the personal store.
+    endTour(true); lsSet(K.active, "demo"); load(demoState(), msg); show("focus"); window.scrollTo(0, 0);
+  }
+  function goMine(fresh) {
+    lsSet(K.active, "mine"); load(fresh || readStore(K.mine)); show("focus"); window.scrollTo(0, 0);
+  }
+  function openMine() {
+    endTour(true);
+    const exists = hasMine();
+    $("mineH").textContent = exists ? "Your Hub is ready" : "Start your own Hub";
+    $("mineP").textContent = exists
+      ? "You already have a Hub on this device. Opening it changes nothing — your data stays exactly as you left it."
+      : "A clean workspace, saved only on this device. The demo stays available — switching never touches your data.";
+    $("mineField").hidden = exists;
+    $("wBlank").textContent = exists ? "Open my Hub" : "Create my Hub";
+    $("wName").value = "";
+    openSheet("mine");
+    if (!exists) setTimeout(() => $("wName").focus(), 60);
+  }
   $("wBlank").onclick = () => {
+    lsSet(K.seen, "1");
+    if (hasMine()) { closeSheets(); goMine(); toast("Welcome back"); return; } // never overwrite an existing Hub
     const name = $("wName").value.trim();
-    load(blankState(name), name ? "Welcome, " + name : "Welcome");
-    $("welcome").classList.remove("on"); show("focus");
+    const s = blankState(name); lsSet(K.mine, JSON.stringify(s));
+    closeSheets(); goMine(s); toast(name ? "Welcome, " + name : "Your Hub is ready");
   };
-  $("wSample").onclick = () => { if (state.mode !== "sample") load(seed()); else persist(); $("welcome").classList.remove("on"); show("focus"); };
   $("wName").onkeydown = e => { if (e.key === "Enter") $("wBlank").click(); };
+  $("wCancel").onclick = closeSheets;
+  $("scrim").onclick = () => { if ($("mine").classList.contains("on")) closeSheets(); };
+  ["mineBtn","iMine","sMine"].forEach(id => $(id).onclick = openMine);
+  ["tourBtn","iTour"].forEach(id => $(id).onclick = () => { lsSet(K.seen, "1"); startTour(); });
+  $("iLook").onclick = () => { lsSet(K.seen, "1"); closeSheets(); };
+  $("viewDemo").onclick = () => goDemo("Demo · your Hub is untouched");
+  $("sDemo").onclick = () => goDemo("Demo · your Hub is untouched");
+  $("sResetDemo").onclick = e => confirmTap(e.currentTarget, "Reset demo", () => { const s = seed(); lsSet(K.demo, JSON.stringify(s)); load(s, "Demo reset"); show("focus"); });
+
+  // ---------- confirmation for clearing personal data ----------
+  let onConfirm = null;
+  function askClear(title, body, label, fn) {
+    $("cH").textContent = title; $("cP").textContent = body; $("cYes").textContent = label;
+    $("cIn").value = ""; $("cYes").disabled = true; onConfirm = fn;
+    $("confirm").classList.add("on"); $("scrim").classList.add("on"); setTimeout(() => $("cIn").focus(), 60);
+  }
+  const closeConfirm = () => { $("confirm").classList.remove("on"); $("scrim").classList.remove("on"); onConfirm = null; };
+  $("cIn").oninput = () => { $("cYes").disabled = $("cIn").value.trim().toUpperCase() !== "CLEAR"; };
+  $("cIn").onkeydown = e => { if (e.key === "Enter" && !$("cYes").disabled) $("cYes").click(); if (e.key === "Escape") closeConfirm(); };
+  $("cNo").onclick = closeConfirm;
+  $("cYes").onclick = () => { const fn = onConfirm; closeConfirm(); if (fn) fn(); };
+  $("sClear").onclick = () => {
+    const m = readStore(K.mine) || state;
+    const n = m.office.length + m.personal.length + m.decisions.length + m.log.length + m.ventures.length + m.milestones.length + m.briefs.length + m.trips.length;
+    askClear("Clear your Hub?", "This permanently erases " + n + " item" + (n === 1 ? "" : "s") + ", your settings and history on this device. It can't be undone unless you exported a backup.", "Clear my Hub", () => {
+      const s = blankState(m.cfg.name); lsSet(K.mine, JSON.stringify(s)); goMine(s); toast("Your Hub was cleared");
+    });
+  };
+
+  // ---------- guided tour (demo only) ----------
+  const TOUR = [
+    { v: "focus", sel: ".hero", h: "One next action", p: "Hub picks the single most important thing to do now, and shows what got done this week." },
+    { v: "focus", sel: "#exceptions", h: "Only what needs you", p: "Decisions owed, overdue dates, gates coming up. Exceptions only. Tap any row to jump to it." },
+    { v: "focus", sel: "#focusList", up: true, h: "Three priorities. Hard cap.", p: "Star up to three tasks from anywhere. A fourth won't fit. Tap a task to mark it done — try it." },
+    { v: "business", sel: "#officeForm", up: true, h: "Office Hours: park it, mark it", p: "Drop tasks in with a tag. Tap to mark ✓. Done items clear themselves tomorrow." },
+    { v: "business", sel: "#portBody", h: "The whole portfolio, one screen", p: "Every client and venture on one card. Tap a status pill to cycle Active → At risk → Blocked → Paused." },
+    { v: "business", sel: "#msBody", h: "Milestones and gates", p: "Dates that matter and calls that need approval. They feed the Overdue and Approaching alerts on Focus." },
+    { v: "personal", sel: "#upBody", h: "Business is business. This is yours.", p: "Trips with countdowns, today's personal list, and a weekly habit rhythm that resets Monday." },
+    { v: "setup", sel: "#mods", h: "Your Rules", p: "Name, theme, hours, tags, habits. Switch off any lane you don't need. Ready to try it with your own day?", last: true }
+  ];
+  let tStep = -1;
+  const clearSpot = () => document.querySelectorAll(".spot").forEach(n => n.classList.remove("spot"));
+  function tourGo(i) {
+    tStep = Math.max(0, Math.min(TOUR.length - 1, i));
+    const s = TOUR[tStep];
+    show(s.v); clearSpot();
+    const target = document.querySelector(s.sel);
+    if (target) {
+      const d = target.closest("details"); if (d) d.open = true;
+      target.classList.add("spot");
+      setTimeout(() => target.scrollIntoView({ behavior: "smooth", block: s.up ? "start" : "center" }), 30);
+    }
+    $("tH").textContent = s.h; $("tP").textContent = s.p;
+    const dots = $("tDots"); dots.textContent = ""; TOUR.forEach((_, k) => dots.appendChild(el("i", k === tStep ? "on" : "")));
+    $("tBack").style.visibility = tStep ? "visible" : "hidden";
+    $("tNext").textContent = s.last ? "Make It Mine" : "Next";
+  }
+  function startTour() { if (!isDemo()) { goDemo(); } closeSheets(); document.body.classList.add("touring"); openSheet("tour"); tourGo(0); }
+  function endTour(silent) {
+    if (tStep < 0) return;
+    tStep = -1; clearSpot(); document.body.classList.remove("touring"); $("tour").classList.remove("on");
+    if (!silent) { show("focus"); window.scrollTo({ top: 0, behavior: "smooth" }); toast("Explore freely · Make It Mine anytime"); }
+  }
+  $("tNext").onclick = () => TOUR[tStep].last ? openMine() : tourGo(tStep + 1);
+  $("tBack").onclick = () => tourGo(tStep - 1);
+  $("tEnd").onclick = () => endTour(false);
+
   function chrome() {
-    $("demoBar").style.display = state.mode === "sample" ? "" : "none";
+    const demo = isDemo();
+    $("demoBar").style.display = demo ? "" : "none";
+    $("mineBar").style.display = demo ? "none" : "";
+    $("secDemoCtl").style.display = demo ? "" : "none";
+    $("secMineCtl").style.display = demo ? "none" : "";
+    $("bDemoNote").hidden = !demo; $("bBody").hidden = demo;
+    $("bSub").textContent = demo ? "For your own Hub." : "Your data lives only on this device.";
+    $("foot").textContent = demo ? "Hub · demo · sample data resets daily · your own Hub is kept separately" : "Hub · prototype · your data stays on this device";
     $("noSave").style.display = canSave ? "none" : "block";
   }
 
   // ---------- backup ----------
-  const backupText = () => JSON.stringify({ app: "hub", version: 4, exported: new Date().toISOString(), state }, null, 1);
+  const backupText = () => JSON.stringify({ app: "hub", version: 5, exported: new Date().toISOString(), state }, null, 1);
   $("bExport").onclick = () => {
     const txt = backupText(); $("bText").value = txt;
     if (window.claude) { toast("Backup ready below. Tap Copy and save it."); return; }
@@ -1157,11 +1356,12 @@
     let p; try { p = JSON.parse(txt); } catch (e) { toast("That isn't a Hub backup."); return; }
     const s = p && p.state ? p.state : p;
     if (!valid(s)) { toast("That isn't a Hub backup."); return; }
-    load(normalize(fill(s)), "Restored"); show("focus");
+    const apply = () => { const r = normalize(fill(s)); r.mode = "blank"; lsSet(K.mine, JSON.stringify(r)); goMine(r); toast("Restored"); };
+    askClear("Replace your Hub with this backup?", "Everything currently in your Hub on this device is replaced by the backup. Export first if you want to keep it.", "Replace", apply);
   }
-  $("bImport").onclick = e => {
+  $("bImport").onclick = () => {
     const txt = $("bText").value.trim(); if (!txt) { toast("Paste a backup first."); return; }
-    confirmTap(e.currentTarget, "Restore from pasted backup", () => restore(txt));
+    restore(txt);
   };
   $("bFile").onchange = e => {
     const f = e.target.files && e.target.files[0]; if (!f) return;
@@ -1200,7 +1400,7 @@
     renderCloseout(); renderPortfolio(); renderMilestones(); renderBriefs(); renderRhythm(); renderComingUp(); renderCounts();
   }
   applyMods(); renderTags(); renderAll(); ohStatus(); chrome();
-  if (firstRun) $("welcome").classList.add("on");
+  if (firstRun) openSheet("intro");
   setInterval(() => { ohStatus(); renderFocus(); }, 60000);
   show(location.hash.slice(1) || "focus");
 })();
