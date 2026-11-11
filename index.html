@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Hub">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="theme-color" content="#0f0f0e">
+<title>Hub — Prototype Demo</title>
+<style>
+  :root{
+    --bg:#0f0f0e; --fg:#ecebe6; --dim:#8a8984; --faint:#3a3a37; --line:#1f1f1d;
+    --accent:#d8c9a3; --alert:#e0826b; --ok:#9fbf8f; --card:#161614;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f6f5f1; --fg:#1b1b19; --dim:#76756f; --faint:#cfcdc6; --line:#e6e4dd; --accent:#8a7442; --alert:#b4452c; --ok:#4f7a3d; --card:#efede7; }
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--fg)}
+  body{font:16px/1.45 -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",sans-serif;min-height:100vh;display:flex;justify-content:center;-webkit-font-smoothing:antialiased}
+  .app{width:100%;max-width:540px;padding:22px 22px 120px}
+  .demo{font-size:12.5px;color:var(--dim);border:1px dashed var(--faint);border-radius:10px;padding:9px 12px;margin-bottom:20px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+  .demo b{color:var(--accent);font-weight:500}
+  header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px}
+  .brand{font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim)}
+  .date{font-size:13px;color:var(--dim)}
+  h1{font-size:30px;font-weight:500;letter-spacing:-.01em;margin-bottom:4px}
+  .sub{color:var(--dim);font-size:14px;margin-bottom:22px}
+  .sub b{color:var(--accent);font-weight:500}
+  .add{display:flex;gap:8px;border-bottom:1px solid var(--faint);padding:6px 0 10px;margin-bottom:10px}
+  .add input{flex:1;min-width:0;background:none;border:0;outline:0;color:var(--fg);font:inherit;font-size:17px}
+  .add input::placeholder{color:var(--faint)}
+  .add button,.link{background:none;border:0;color:var(--dim);font:inherit;font-size:14px;cursor:pointer;padding:0}
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 18px}
+  .chip{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);border:1px solid var(--faint);border-radius:20px;padding:4px 9px;background:none;cursor:pointer;font-family:inherit}
+  .chip.sel{color:var(--bg);background:var(--accent);border-color:var(--accent)}
+  .chip.ok{color:var(--ok);border-color:var(--ok)}
+  ul{list-style:none}
+  li.item{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer;user-select:none}
+  li.item .mark{width:20px;flex:none;color:var(--faint);font-size:15px;padding-top:1px}
+  li.item .body{flex:1;font-size:17.5px;min-width:0}
+  li.item .tag{display:block;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:1px}
+  li.item.done .body{color:var(--faint);text-decoration:line-through;text-decoration-color:var(--faint)}
+  li.item.done .tag{color:var(--faint)}
+  li.item.done .mark{color:var(--ok)}
+  .ib{color:var(--faint);background:none;border:0;font-size:17px;cursor:pointer;padding:0 3px;line-height:1.3}
+  .ib.star.on{color:var(--accent)}
+  .empty{color:var(--faint);padding:16px 0;font-size:15px;border:0!important;cursor:default!important}
+  .foot{display:flex;justify-content:space-between;margin-top:14px;font-size:13px;color:var(--dim)}
+  .section{margin-top:34px}
+  .label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;justify-content:space-between}
+  .health{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}
+  .h{border:1px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;user-select:none;background:none;color:var(--fg);font-family:inherit;touch-action:manipulation}
+  .h .n{font-size:22px;font-weight:500}
+  .h .n small{font-size:13px;color:var(--dim);font-weight:400}
+  .h .t{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:2px}
+  .h.met{border-color:var(--ok)} .h.met .n{color:var(--ok)}
+  .dec{padding:13px 0;border-bottom:1px solid var(--line)}
+  .dec .q{font-size:17px}
+  .dec .meta{font-size:12.5px;color:var(--dim);margin-top:2px}
+  .dec .row{display:flex;gap:8px;margin-top:8px}
+  .dec input{flex:1;min-width:0;background:var(--card);border:1px solid var(--line);border-radius:8px;color:var(--fg);font:inherit;font-size:14.5px;padding:7px 10px;outline:0}
+  .dec .ans{font-size:14.5px;color:var(--ok);margin-top:4px}
+  .btn{font:inherit;font-size:13.5px;color:var(--bg);background:var(--accent);border:0;border-radius:20px;padding:7px 14px;cursor:pointer;white-space:nowrap}
+  .btn.ghost{background:none;color:var(--dim);border:1px solid var(--faint)}
+  .mail li{padding:12px 0;border-bottom:1px solid var(--line)}
+  .mail .who{font-size:13px;color:var(--dim);display:flex;justify-content:space-between;gap:8px}
+  .mail .subj{font-size:16.5px}
+  .mail .acts{display:flex;gap:6px;margin-top:8px}
+  .alertbox .subj{color:var(--alert)}
+  .warn{font-size:12.5px;color:var(--alert);margin:-4px 0 8px}
+  .stage{font-size:13px;color:var(--dim);border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:6px}
+  .stage b{color:var(--fg);font-weight:500}
+  .stage.on{border-color:var(--accent)}
+  .stage .s{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:block}
+  .focusbox{background:var(--card);border-radius:14px;padding:4px 16px}
+  .focusbox li.item:last-child{border-bottom:0}
+  .lane{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);margin-left:6px}
+  .field{margin-bottom:18px}
+  .field label{display:block;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+  .field input,.field textarea{width:100%;background:var(--card);border:1px solid var(--line);border-radius:8px;color:var(--fg);font:inherit;font-size:15px;padding:9px 11px;outline:0}
+  .field textarea{min-height:92px;resize:vertical}
+  .field .hint{font-size:12px;color:var(--dim);margin-top:5px}
+  .two{display:flex;gap:10px} .two .field{flex:1}
+  .mod{display:flex;justify-content:space-between;align-items:center;padding:11px 0;border-bottom:1px solid var(--line);font-size:15px}
+  .mod small{display:block;color:var(--dim);font-size:12.5px}
+  .tog{width:42px;height:24px;border-radius:12px;background:var(--faint);border:0;position:relative;cursor:pointer;flex:none}
+  .tog::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--bg);transition:left .15s}
+  .tog.on{background:var(--ok)} .tog.on::after{left:21px}
+  .toast{position:fixed;left:50%;bottom:86px;transform:translateX(-50%);background:var(--fg);color:var(--bg);font-size:14px;padding:8px 14px;border-radius:20px;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast.on{opacity:1}
+  nav{position:fixed;left:0;right:0;bottom:0;display:flex;justify-content:center;background:var(--bg);border-top:1px solid var(--line);padding:12px 0 calc(14px + env(safe-area-inset-bottom))}
+  nav .in{display:flex;gap:26px}
+  nav button{background:none;border:0;color:var(--faint);font:inherit;font-size:14.5px;letter-spacing:.04em;cursor:pointer;position:relative}
+  nav button.on{color:var(--fg)}
+  nav .badge{position:absolute;top:-4px;right:-10px;font-size:10px;color:var(--alert)}
+  .view{display:none} .view.on{display:block}
+  .welcome{position:fixed;inset:0;background:var(--bg);z-index:20;display:none;justify-content:center;overflow:auto}
+  .welcome.on{display:flex}
+  .welcome .in{width:100%;max-width:540px;padding:64px 26px 40px}
+  .welcome h1{font-size:34px;margin:18px 0 10px}
+  .welcome p{color:var(--dim);font-size:15.5px;margin-bottom:8px}
+  .welcome .pts{margin:22px 0 28px;font-size:15px;color:var(--fg)}
+  .welcome .pts div{padding:9px 0;border-bottom:1px solid var(--line);display:flex;gap:8px}
+  .welcome .pts span{color:var(--accent);flex:none;width:92px;padding-top:3px;font-size:11px;letter-spacing:.16em;text-transform:uppercase}
+  .welcome .btn{width:100%;padding:13px;font-size:15.5px;margin-top:10px}
+  .welcome .alt{display:block;width:100%;text-align:center;margin-top:14px}
+  .backup textarea{font-family:ui-monospace,Menlo,monospace;font-size:12px;min-height:110px}
+  .row2{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+  .warnbar{font-size:12.5px;color:var(--alert);border:1px solid var(--alert);border-radius:10px;padding:9px 12px;margin-bottom:16px;display:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="warnbar" id="noSave">This browser isn't saving. Use Rules → Backup before you close it.</div>
+  <div class="demo" id="demoBar"><span><b>Sample data</b> · explore freely</span><button class="link" id="goBlank">Start blank →</button></div>
+  <header>
+    <span class="brand">Hub</span>
+    <span class="date" id="today"></span>
+  </header>
+
+  <!-- FOCUS -->
+  <section class="view on" id="v-focus">
+    <h1 id="greet">Today</h1>
+    <p class="sub" id="focusSub"></p>
+    <div class="label"><span>Three priorities</span><span id="focusN"></span></div>
+    <div class="focusbox"><ul id="focusList"></ul></div>
+    <p class="sub" id="focusHint" style="font-size:12.5px;margin-top:8px">Star ☆ any item in Business or Personal to put it here. Max three.</p>
+    <div class="section">
+      <div class="label"><span>Decisions waiting</span><span id="focusDecN"></span></div>
+      <div id="focusDec"></div>
+    </div>
+    <div class="section">
+      <div class="label"><span>At a glance</span></div>
+      <div class="health" id="glance"></div>
+    </div>
+  </section>
+
+  <!-- BUSINESS -->
+  <section class="view" id="v-business">
+    <h1>Office Hours</h1>
+    <p class="sub" id="ohStatus"></p>
+    <form class="add" id="officeForm">
+      <input id="officeInput" placeholder="[CLIENT] Send revised scope" autocomplete="off">
+      <button type="submit">Park</button>
+    </form>
+    <div class="tags" id="officeTags"></div>
+    <ul id="officeList"></ul>
+    <div class="foot"><span id="officeCount"></span><button class="link" id="officeClear">Clear done</button></div>
+
+    <div class="section">
+      <div class="label"><span>Pending decisions</span><span id="decN"></span></div>
+      <form class="add" id="decForm">
+        <input id="decInput" placeholder="Raise rates for new clients in Q1?" autocomplete="off">
+        <button type="submit">Log</button>
+      </form>
+      <div id="decList"></div>
+    </div>
+    <details class="section">
+      <summary class="label" style="cursor:pointer;list-style:none"><span>Decision log</span><span id="loggedN"></span></summary>
+      <div id="decLog"></div>
+    </details>
+  </section>
+
+  <!-- PERSONAL -->
+  <section class="view" id="v-personal">
+    <h1>Personal</h1>
+    <p class="sub">Today's list. Done items clear tomorrow.</p>
+    <form class="add" id="personalForm">
+      <input id="personalInput" placeholder="Walk · Call Mom · Read 20 min" autocomplete="off">
+      <button type="submit">Add</button>
+    </form>
+    <ul id="personalList"></ul>
+    <div class="foot"><span id="personalCount"></span><button class="link" id="personalClear">Clear done</button></div>
+    <div class="section">
+      <div class="label"><span>This week</span><span id="weekLabel"></span></div>
+      <div class="health" id="health"></div>
+      <p class="sub" style="margin-top:10px;font-size:12.5px">Tap to log. Hold to undo. Resets Monday.</p>
+    </div>
+  </section>
+
+  <!-- MAIL -->
+  <section class="view" id="v-mail">
+    <h1>Mail</h1>
+    <p class="sub">Sample inbox · read-only · you decide what comes in</p>
+    <div class="section alertbox" style="margin-top:6px">
+      <div class="label"><span>Alerts</span><span id="alertN"></span></div>
+      <p class="warn">Look, verify at the source. Never act from the email.</p>
+      <ul class="mail" id="alertList"></ul>
+    </div>
+    <div class="section">
+      <div class="label"><span>Needs you</span><span id="urgentN"></span></div>
+      <ul class="mail" id="urgentList"></ul>
+    </div>
+    <details class="section">
+      <summary class="label" style="cursor:pointer;list-style:none"><span>Tucked away</span><span id="restN"></span></summary>
+      <ul class="mail" id="restList"></ul>
+    </details>
+    <div class="section">
+      <div class="label"><span>How mail connects</span></div>
+      <div class="stage on"><span class="s">Stage 1 · this demo</span><b>Manual.</b> Turn an email into a task (Park) or a decision (Decide). Nothing leaves your inbox.</div>
+      <div class="stage"><span class="s">Stage 2 · planned</span><b>Your labels.</b> Pick the folders or labels that flow in. Read-only.</div>
+      <div class="stage"><span class="s">Stage 3 · optional</span><b>Your rules.</b> Priority filters and summaries, set by you.</div>
+    </div>
+  </section>
+
+  <!-- SETUP -->
+  <section class="view" id="v-setup">
+    <h1>Your rules</h1>
+    <p class="sub">Everything here is yours to change.</p>
+    <div class="field"><label>Your name</label><input id="sName"></div>
+    <div class="two">
+      <div class="field"><label>Office hours start</label><input id="sStart" type="time"></div>
+      <div class="field"><label>End</label><input id="sEnd" type="time"></div>
+    </div>
+    <div class="field"><label>Business tags</label><input id="sTags"><div class="hint">Comma-separated. Type [TAG] before any task, or tap a chip.</div></div>
+    <div class="field"><label>Weekly habits</label><textarea id="sHabits"></textarea><div class="hint">One per line: Name, weekly goal</div></div>
+    <div class="label" style="margin-top:6px"><span>Lanes</span></div>
+    <div id="mods"></div>
+    <div style="display:flex;gap:8px;margin-top:22px">
+      <button class="btn" id="sSave">Save</button>
+    </div>
+
+    <div class="section backup">
+      <div class="label"><span>Backup</span></div>
+      <p class="sub" style="font-size:13px;margin-bottom:10px">Your data lives only on this device. Export a backup to keep it safe or move it to another device.</p>
+      <div class="row2">
+        <button class="btn" id="bExport">Export backup</button>
+        <button class="btn ghost" id="bCopy">Copy</button>
+        <label class="btn ghost" style="display:inline-block">Import file<input type="file" id="bFile" accept=".json,application/json,text/plain" hidden></label>
+      </div>
+      <div class="field" style="margin-top:12px"><textarea id="bText" placeholder="Exported backup appears here. To restore, paste a backup and tap Restore."></textarea></div>
+      <button class="btn ghost" id="bImport">Restore from pasted backup</button>
+    </div>
+
+    <div class="section">
+      <div class="label"><span>Start over</span></div>
+      <div class="row2">
+        <button class="btn ghost" id="sBlank">Start blank</button>
+        <button class="btn ghost" id="sSample">Load sample data</button>
+      </div>
+      <p class="sub" style="font-size:12.5px;margin-top:8px">Both replace everything on this device. Export first if you want to keep it.</p>
+    </div>
+  </section>
+</div>
+
+<nav><div class="in">
+  <button data-v="focus" class="on">Focus</button>
+  <button data-v="business">Business</button>
+  <button data-v="personal">Personal</button>
+  <button data-v="mail" id="navMail">Mail<span class="badge" id="navBadge"></span></button>
+  <button data-v="setup">Rules</button>
+</div></nav>
+<div class="toast" id="toast"></div>
+
+<div class="welcome" id="welcome"><div class="in">
+  <span class="brand">Hub</span>
+  <h1>Your Hub. Your Rules. Your Day.</h1>
+  <p>One place. Three priorities. Less noise.</p>
+  <div class="pts">
+    <div><span>Focus</span>Your three priorities for today</div>
+    <div><span>Business</span>Park it. Mark it done. Log decisions.</div>
+    <div><span>Personal</span>Today's list and weekly habits</div>
+    <div><span>Rules</span>Your tags, hours and habits</div>
+  </div>
+  <div class="field"><label>What should Hub call you?</label><input id="wName" placeholder="First name" autocomplete="given-name"></div>
+  <button class="btn" id="wBlank">Start my Hub</button>
+  <button class="link alt" id="wSample">Look around with sample data first</button>
+  <p style="font-size:12.5px;margin-top:22px">Everything stays on this device. Nothing is sent anywhere.</p>
+</div></div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const dayKey = (d = new Date()) => d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+  const weekKey = (d = new Date()) => { const m = new Date(d); m.setDate(m.getDate() - (m.getDay() + 6) % 7); return dayKey(m); };
+  const uid = () => Math.random().toString(36).slice(2, 10);
+  const toast = t => { const n = $("toast"); n.textContent = t; n.classList.add("on"); clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove("on"), 1600); };
+  $("today").textContent = new Date().toLocaleDateString(undefined, { weekday:"short", month:"short", day:"numeric" });
+
+  // ---------- sample data (anonymized) ----------
+  function seed() {
+    const now = Date.now(), t = dayKey();
+    const it = (tag, text, o = {}) => Object.assign({ id: uid(), tag, text, done: false, star: false, ts: now - Math.random()*1e6 }, o);
+    return {
+      v: 3, mode: "sample",
+      cfg: {
+        name: "Jordan", start: "08:30", end: "09:30",
+        tags: ["CLIENT","SALES","OPS","CONTENT","ADMIN","MAIL"],
+        habits: [["Gym",3],["Walk",5],["Read",4],["No-phone AM",5]],
+        mods: { personal: true, mail: true, decisions: true }
+      },
+      office: [
+        it("CLIENT","Send revised scope to Harbor & Co.", { star: true }),
+        it("SALES","Follow up on Lakeview proposal"),
+        it("OPS","Renew domain + check site backups"),
+        it("CONTENT","Draft Thursday newsletter", { star: true }),
+        it("ADMIN","Q4 estimated tax payment", { done: true, doneOn: t }),
+        it("MAIL","Priya — invoice question")
+      ],
+      personal: [
+        it("","30-min walk after lunch", { star: true }),
+        it("","Call Mom"),
+        it("","Book dentist", { done: true, doneOn: t })
+      ],
+      decisions: [
+        { id: uid(), q: "Raise rates for new clients in Q1?", ts: now - 864e5*2 },
+        { id: uid(), q: "Hire a part-time VA or keep doing admin myself?", ts: now - 864e5*5 }
+      ],
+      log: [
+        { id: uid(), q: "Take on the Lakeview retainer?", a: "Yes — 6-month term, revisit in March.", ts: now - 864e5*9, at: now - 864e5*6 }
+      ],
+      health: { week: weekKey(), counts: { "Gym": 2, "Walk": 3, "Read": 1 } },
+      parked: []
+    };
+  }
+
+  const MAIL = [
+    { id:"m1", kind:"alert", from:"Bank Alerts", subj:"Unusual sign-in activity on your account", h:1 },
+    { id:"m2", kind:"urgent", from:"Priya Shah", subj:"Quick question on invoice #2087", h:2 },
+    { id:"m3", kind:"urgent", from:"Marcus (Lakeview)", subj:"Ready to move forward — next steps?", h:4 },
+    { id:"m4", kind:"urgent", from:"Accountant", subj:"Need your Q4 numbers by Friday", h:20 },
+    { id:"m5", kind:"rest", from:"Design Weekly", subj:"10 layouts worth stealing", h:6 },
+    { id:"m6", kind:"rest", from:"Online Store", subj:"40% off this weekend only", h:9 },
+    { id:"m7", kind:"rest", from:"Calendar", subj:"Reminder: team sync tomorrow 2pm", h:14 },
+    { id:"m8", kind:"rest", from:"Software Co.", subj:"Your receipt for November", h:30 }
+  ];
+
+  // ---------- state ----------
+  function blankState(name) {
+    return {
+      v: 3, mode: "blank",
+      cfg: {
+        name: name || "there", start: "08:30", end: "09:30",
+        tags: ["WORK","CLIENT","ADMIN","MAIL"],
+        habits: [["Move",3],["Read",3]],
+        mods: { personal: true, mail: false, decisions: true }
+      },
+      office: [], personal: [], decisions: [], log: [],
+      health: { week: weekKey(), counts: {} }, parked: []
+    };
+  }
+
+  const LS = "hub-demo-v3";
+  let state, firstRun = false, canSave = true;
+  try { const k = "__hub_t"; localStorage.setItem(k, "1"); localStorage.removeItem(k); } catch (e) { canSave = false; }
+  function valid(s) { return s && typeof s === "object" && s.cfg && Array.isArray(s.office) && Array.isArray(s.personal) && Array.isArray(s.decisions) && Array.isArray(s.log); }
+  function fill(s) {
+    const b = blankState(); s.cfg = Object.assign(b.cfg, s.cfg); s.cfg.mods = Object.assign(b.cfg.mods, s.cfg.mods);
+    s.parked = s.parked || []; s.health = s.health || b.health; s.v = 3; s.mode = s.mode || "blank"; return s;
+  }
+  function normalize(s) {
+    const t = dayKey();
+    s.office = s.office.filter(i => !(i.done && i.doneOn && i.doneOn < t));
+    s.personal = s.personal.filter(i => !(i.done && i.doneOn && i.doneOn < t));
+    if (!s.health || s.health.week !== weekKey()) s.health = { week: weekKey(), counts: {} };
+    return s;
+  }
+  try {
+    const raw = canSave && localStorage.getItem(LS);
+    if (raw) { const p = JSON.parse(raw); if (valid(p)) state = normalize(fill(p)); }
+  } catch (e) {}
+  if (!state) { state = seed(); firstRun = true; }
+  const persist = () => { try { localStorage.setItem(LS, JSON.stringify(state)); } catch (e) {} };
+
+  // ---------- items ----------
+  const starredCount = () => state.office.concat(state.personal).filter(i => i.star && !i.done).length;
+  function parse(text) {
+    const m = text.match(/^\s*\[([^\]]{1,16})\]\s*(.+)$/);
+    return m ? { tag: m[1].trim().toUpperCase(), text: m[2].trim() } : { tag: "", text: text.trim() };
+  }
+  function addItem(key, raw) {
+    if (!raw.trim()) return false;
+    const p = key === "office" ? parse(raw) : { tag: "", text: raw.trim() };
+    if (!p.text) return false;
+    state[key].push({ id: uid(), tag: p.tag, text: p.text, done: false, star: false, ts: Date.now() });
+    persist(); renderAll(); return true;
+  }
+  function itemRow(key, it, showLane) {
+    const li = el("li", "item" + (it.done ? " done" : ""));
+    li.appendChild(el("span", "mark", it.done ? "✅" : "•"));
+    const body = el("span", "body");
+    if (it.tag || showLane) {
+      const tg = el("span", "tag", it.tag || "");
+      if (showLane) tg.appendChild(el("span", "lane", key === "office" ? "Business" : "Personal"));
+      body.appendChild(tg);
+    }
+    body.appendChild(document.createTextNode(it.text));
+    li.appendChild(body);
+    if (!it.done) {
+      const s = el("button", "ib star" + (it.star ? " on" : ""), it.star ? "★" : "☆");
+      s.setAttribute("aria-label", "Priority");
+      s.onclick = e => {
+        e.stopPropagation();
+        if (!it.star && starredCount() >= 3) { toast("Three priorities max. Unstar one first."); return; }
+        it.star = !it.star; persist(); renderAll();
+      };
+      li.appendChild(s);
+    }
+    if (!showLane) {
+      const x = el("button", "ib", "×"); x.setAttribute("aria-label", "Remove");
+      x.onclick = e => { e.stopPropagation(); state[key] = state[key].filter(i => i.id !== it.id); persist(); renderAll(); };
+      li.appendChild(x);
+    }
+    li.onclick = () => { it.done = !it.done; it.doneOn = it.done ? dayKey() : null; if (it.done) it.star = false; persist(); renderAll(); if (it.done) toast("Marked ✅"); };
+    return li;
+  }
+  function renderList(key) {
+    const ul = $(key + "List"); ul.textContent = "";
+    const items = state[key].slice().sort((a,b) => (a.done - b.done) || (b.star - a.star) || (a.ts - b.ts));
+    if (!items.length) ul.appendChild(el("li", "empty", key === "office" ? "Nothing parked. Type a task above and tap Park." : "Nothing yet today. Add one above."));
+    items.forEach(it => ul.appendChild(itemRow(key, it, false)));
+    const open = state[key].filter(i => !i.done).length, done = state[key].length - open;
+    $(key + "Count").textContent = open + " open" + (done ? " · " + done + " done" : "");
+  }
+
+  // ---------- focus ----------
+  function renderFocus() {
+    const h = new Date().getHours();
+    $("greet").textContent = (h < 12 ? "Morning" : h < 17 ? "Afternoon" : "Evening") + ", " + state.cfg.name + ".";
+    const openB = state.office.filter(i => !i.done).length, openP = state.personal.filter(i => !i.done).length;
+    $("focusSub").innerHTML = "";
+    $("focusSub").append(document.createTextNode(openB + " business · " + openP + " personal · "), Object.assign(el("b"), { textContent: state.decisions.length + " decisions" }));
+    const ul = $("focusList"); ul.textContent = "";
+    const pri = [];
+    state.office.forEach(i => i.star && !i.done && pri.push(["office", i]));
+    if (state.cfg.mods.personal) state.personal.forEach(i => i.star && !i.done && pri.push(["personal", i]));
+    if (!pri.length) ul.appendChild(el("li", "empty", "No priorities yet. Add a task in Business or Personal, then tap ☆."));
+    pri.forEach(([k, i]) => ul.appendChild(itemRow(k, i, true)));
+    $("focusN").textContent = pri.length + "/3";
+    $("focusHint").style.display = pri.length ? "" : "none";
+    const fd = $("focusDec"); fd.textContent = "";
+    $("focusDecN").textContent = state.decisions.length || "";
+    if (!state.cfg.mods.decisions || !state.decisions.length) fd.appendChild(el("div", "empty", "Nothing waiting on you."));
+    else state.decisions.slice(0, 3).forEach(d => fd.appendChild(decRow(d)));
+    const g = $("glance"); g.textContent = "";
+    const ohm = ohMinutes();
+    const tiles = [
+      [ohm.label, "Office hours"],
+      [String(state.office.filter(i => i.done).length + state.personal.filter(i => i.done).length), "Done today"],
+    ];
+    if (state.cfg.mods.mail) tiles.push([String(MAIL.filter(m => m.kind === "urgent" && !state.parked.includes(m.id)).length), "Mail needs you"]);
+    tiles.forEach(([n, t]) => { const b = el("div", "h"); b.style.cursor = "default"; b.appendChild(el("div", "n", n)); b.appendChild(el("div", "t", t)); g.appendChild(b); });
+  }
+
+  // ---------- decisions ----------
+  const daysAgo = ts => { const d = Math.floor((Date.now() - ts) / 864e5); return d <= 0 ? "today" : d === 1 ? "1 day" : d + " days"; };
+  function decRow(d) {
+    const w = el("div", "dec");
+    w.appendChild(el("div", "q", d.q));
+    w.appendChild(el("div", "meta", "Waiting " + daysAgo(d.ts)));
+    const row = el("div", "row");
+    const inp = el("input"); inp.placeholder = "Your call…";
+    const b = el("button", "btn", "Decide");
+    const go = () => {
+      const a = inp.value.trim(); if (!a) { inp.focus(); return; }
+      state.decisions = state.decisions.filter(x => x.id !== d.id);
+      state.log.unshift({ id: d.id, q: d.q, a, ts: d.ts, at: Date.now() });
+      persist(); renderAll(); toast("Decided. Logged.");
+    };
+    b.onclick = go; inp.onkeydown = e => { if (e.key === "Enter") go(); };
+    row.append(inp, b); w.appendChild(row);
+    return w;
+  }
+  function renderDecisions() {
+    const box = $("decList"); box.textContent = "";
+    $("decN").textContent = state.decisions.length || "";
+    if (!state.decisions.length) box.appendChild(el("div", "empty", "Nothing pending."));
+    state.decisions.forEach(d => box.appendChild(decRow(d)));
+    const lg = $("decLog"); lg.textContent = "";
+    $("loggedN").textContent = state.log.length || "";
+    if (!state.log.length) lg.appendChild(el("div", "empty", "No decisions logged yet."));
+    state.log.forEach(d => {
+      const w = el("div", "dec");
+      w.appendChild(el("div", "q", d.q));
+      w.appendChild(el("div", "ans", "→ " + d.a));
+      w.appendChild(el("div", "meta", new Date(d.at).toLocaleDateString(undefined, { month:"short", day:"numeric" }) + " · took " + Math.max(0, Math.round((d.at - d.ts) / 864e5)) + "d"));
+      lg.appendChild(w);
+    });
+  }
+
+  // ---------- office hours ----------
+  const toMin = s => { const [h, m] = (s || "0:0").split(":").map(Number); return h*60 + m; };
+  const fmt = s => { const [h, m] = s.split(":").map(Number); return new Date(2000,0,1,h,m).toLocaleTimeString(undefined,{hour:"numeric",minute:"2-digit"}); };
+  function ohMinutes() {
+    const n = new Date(), m = n.getHours()*60 + n.getMinutes(), a = toMin(state.cfg.start), b = toMin(state.cfg.end);
+    if (m >= a && m < b) return { open: true, label: (b - m) + "m", text: "open now — " + (b - m) + " min left" };
+    if (m < a) { const d = a - m; return { open: false, label: Math.floor(d/60) + "h" + (d%60 ? " " + d%60 + "m" : ""), text: "opens in " + Math.floor(d/60) + "h " + (d%60) + "m" }; }
+    return { open: false, label: "Closed", text: "closed — park it for tomorrow" };
+  }
+  function ohStatus() {
+    const o = ohMinutes(), s = $("ohStatus"); s.textContent = fmt(state.cfg.start) + " – " + fmt(state.cfg.end) + " · ";
+    const b = el(o.open ? "b" : "span", null, o.text); s.appendChild(b);
+  }
+  let selTag = "";
+  function renderTags() {
+    const box = $("officeTags"); box.textContent = "";
+    state.cfg.tags.forEach(t => {
+      const b = el("button", "chip" + (selTag === t ? " sel" : ""), t); b.type = "button";
+      b.onclick = () => { selTag = selTag === t ? "" : t; renderTags(); $("officeInput").focus(); };
+      box.appendChild(b);
+    });
+    $("officeInput").placeholder = "[" + (state.cfg.tags[0] || "TAG") + "] Next thing to handle";
+  }
+
+  // ---------- habits ----------
+  function renderHealth() {
+    const box = $("health"); box.textContent = "";
+    $("weekLabel").textContent = "Week of " + new Date(state.health.week + "T12:00").toLocaleDateString(undefined, { month:"short", day:"numeric" });
+    state.cfg.habits.forEach(([k, goal]) => {
+      const c = state.health.counts[k] || 0;
+      const b = el("button", "h" + (c >= goal ? " met" : "")); b.type = "button";
+      const n = el("div", "n", String(c)); n.appendChild(el("small", null, "/" + goal));
+      b.append(n, el("div", "t", k));
+      let held = false, timer;
+      b.addEventListener("pointerdown", () => { held = false; timer = setTimeout(() => { held = true; state.health.counts[k] = Math.max(0, c - 1); persist(); renderHealth(); toast("Undone"); }, 550); });
+      ["pointerup","pointerleave"].forEach(ev => b.addEventListener(ev, () => clearTimeout(timer)));
+      b.addEventListener("contextmenu", e => e.preventDefault());
+      b.onclick = () => { if (held) return; state.health.counts[k] = c + 1; persist(); renderHealth(); };
+      box.appendChild(b);
+    });
+  }
+
+  // ---------- mail (stage 1, sample) ----------
+  function mailRow(m) {
+    const li = el("li");
+    const who = el("div", "who"); who.append(el("span", null, m.from), el("span", null, m.h < 24 ? m.h + "h" : Math.round(m.h/24) + "d"));
+    li.append(who, el("div", "subj", m.subj));
+    if (m.kind !== "alert") {
+      const acts = el("div", "acts");
+      const done = state.parked.includes(m.id);
+      const p = el("button", "chip" + (done ? " ok" : ""), done ? "Moved" : "Park"); p.type = "button";
+      const d = el("button", "chip", "Decide"); d.type = "button";
+      p.onclick = () => { if (state.parked.includes(m.id)) return; state.parked.push(m.id); addItem("office", "[MAIL] " + m.from + " — " + m.subj); toast("Parked in Business"); };
+      d.onclick = () => { if (state.parked.includes(m.id)) return; state.parked.push(m.id); state.decisions.push({ id: uid(), q: m.from + ": " + m.subj, ts: Date.now() }); persist(); renderAll(); toast("Added to decisions"); };
+      acts.append(p); if (!done) acts.append(d);
+      li.appendChild(acts);
+    }
+    return li;
+  }
+  function renderMail() {
+    const fill = (id, kind, empty) => {
+      const ul = $(id); ul.textContent = "";
+      const rows = MAIL.filter(m => m.kind === kind);
+      if (!rows.length) ul.appendChild(el("li", "empty", empty));
+      rows.forEach(m => ul.appendChild(mailRow(m)));
+      return rows.length;
+    };
+    $("alertN").textContent = fill("alertList", "alert", "No alerts.");
+    $("urgentN").textContent = fill("urgentList", "urgent", "Nothing needs you.");
+    $("restN").textContent = fill("restList", "rest", "Empty.");
+    $("navBadge").textContent = MAIL.some(m => m.kind === "alert") ? "•" : "";
+  }
+
+  // ---------- setup ----------
+  const MODS = [["personal","Personal lane","Daily list + weekly habits"],["decisions","Decisions","Pending calls + decision log"],["mail","Mail","Stage 1: manual triage"]];
+  function fillSetup() {
+    $("sName").value = state.cfg.name; $("sStart").value = state.cfg.start; $("sEnd").value = state.cfg.end;
+    $("sTags").value = state.cfg.tags.join(", ");
+    $("sHabits").value = state.cfg.habits.map(([n, g]) => n + ", " + g).join("\n");
+    const box = $("mods"); box.textContent = "";
+    MODS.forEach(([k, t, d]) => {
+      const r = el("div", "mod"); const l = el("div", null, t); l.appendChild(el("small", null, d));
+      const b = el("button", "tog" + (state.cfg.mods[k] ? " on" : "")); b.type = "button"; b.setAttribute("aria-label", t);
+      b.onclick = () => { state.cfg.mods[k] = !state.cfg.mods[k]; persist(); applyMods(); fillSetup(); renderAll(); };
+      r.append(l, b); box.appendChild(r);
+    });
+  }
+  $("sSave").onclick = () => {
+    state.cfg.name = $("sName").value.trim() || "there";
+    if ($("sStart").value) state.cfg.start = $("sStart").value;
+    if ($("sEnd").value) state.cfg.end = $("sEnd").value;
+    const tags = $("sTags").value.split(",").map(s => s.trim().toUpperCase().replace(/[\[\]]/g, "")).filter(Boolean).slice(0, 12);
+    if (tags.length) state.cfg.tags = tags;
+    const hab = $("sHabits").value.split("\n").map(l => l.split(",")).filter(p => p[0] && p[0].trim()).map(p => [p[0].trim().slice(0, 18), Math.max(1, Math.min(14, parseInt(p[1], 10) || 3))]).slice(0, 8);
+    if (hab.length) state.cfg.habits = hab;
+    persist(); renderTags(); renderAll(); ohStatus(); toast("Saved");
+  };
+  // ---------- start over / first use ----------
+  function load(s, msg) {
+    state = s; persist(); selTag = "";
+    applyMods(); fillSetup(); renderTags(); renderAll(); ohStatus(); chrome();
+    if (msg) toast(msg);
+  }
+  function confirmTap(btn, label, fn) {
+    if (btn.dataset.arm) { delete btn.dataset.arm; btn.textContent = label; fn(); return; }
+    btn.dataset.arm = "1"; btn.textContent = "Tap again to confirm";
+    setTimeout(() => { if (btn.dataset.arm) { delete btn.dataset.arm; btn.textContent = label; } }, 3500);
+  }
+  $("sBlank").onclick = e => confirmTap(e.currentTarget, "Start blank", () => { load(blankState(state.cfg.name), "Fresh start"); show("focus"); });
+  $("sSample").onclick = e => confirmTap(e.currentTarget, "Load sample data", () => { load(seed(), "Sample data loaded"); show("focus"); });
+  $("goBlank").onclick = () => { $("wName").value = ""; $("welcome").classList.add("on"); };
+  $("wBlank").onclick = () => {
+    const name = $("wName").value.trim();
+    load(blankState(name), name ? "Welcome, " + name : "Welcome");
+    $("welcome").classList.remove("on"); show("focus");
+  };
+  $("wSample").onclick = () => { if (state.mode !== "sample") load(seed()); else persist(); $("welcome").classList.remove("on"); show("focus"); };
+  $("wName").onkeydown = e => { if (e.key === "Enter") $("wBlank").click(); };
+  function chrome() {
+    $("demoBar").style.display = state.mode === "sample" ? "" : "none";
+    $("noSave").style.display = canSave ? "none" : "block";
+  }
+
+  // ---------- backup ----------
+  function backupText() { return JSON.stringify({ app: "hub", version: 3, exported: new Date().toISOString(), state }, null, 1); }
+  $("bExport").onclick = () => {
+    const txt = backupText(); $("bText").value = txt;
+    if (window.claude) { toast("Backup ready below. Tap Copy and save it."); return; }
+    try {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([txt], { type: "application/json" }));
+      a.download = "hub-backup-" + dayKey() + ".json";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      toast("Backup exported");
+    } catch (e) { toast("Backup ready below. Tap Copy."); }
+  };
+  $("bCopy").onclick = async () => {
+    if (!$("bText").value) $("bText").value = backupText();
+    try { await navigator.clipboard.writeText($("bText").value); toast("Copied"); }
+    catch (e) { $("bText").focus(); $("bText").select(); toast("Select all and copy"); }
+  };
+  function restore(txt) {
+    let p; try { p = JSON.parse(txt); } catch (e) { toast("That isn't a Hub backup."); return; }
+    const s = p && p.state ? p.state : p;
+    if (!valid(s)) { toast("That isn't a Hub backup."); return; }
+    load(normalize(fill(s)), "Restored"); show("focus");
+  }
+  $("bImport").onclick = e => {
+    const txt = $("bText").value.trim(); if (!txt) { toast("Paste a backup first."); return; }
+    confirmTap(e.currentTarget, "Restore from pasted backup", () => restore(txt));
+  };
+  $("bFile").onchange = e => {
+    const f = e.target.files && e.target.files[0]; if (!f) return;
+    const r = new FileReader(); r.onload = () => { $("bText").value = String(r.result || ""); toast("Loaded. Tap Restore to apply."); }; r.readAsText(f);
+    e.target.value = "";
+  };
+
+  function applyMods() {
+    document.querySelector('nav button[data-v="personal"]').style.display = state.cfg.mods.personal ? "" : "none";
+    $("navMail").style.display = state.cfg.mods.mail ? "" : "none";
+    ["decForm","decList"].forEach(id => $(id).parentElement.style.display = state.cfg.mods.decisions ? "" : "none");
+    $("decLog").parentElement.style.display = state.cfg.mods.decisions ? "" : "none";
+  }
+
+  // ---------- forms ----------
+  $("officeForm").onsubmit = e => {
+    e.preventDefault(); let v = $("officeInput").value;
+    if (selTag && !/^\s*\[/.test(v)) v = "[" + selTag + "] " + v;
+    if (addItem("office", v)) $("officeInput").value = "";
+  };
+  $("personalForm").onsubmit = e => { e.preventDefault(); if (addItem("personal", $("personalInput").value)) $("personalInput").value = ""; };
+  $("decForm").onsubmit = e => { e.preventDefault(); const v = $("decInput").value.trim(); if (!v) return; state.decisions.push({ id: uid(), q: v, ts: Date.now() }); $("decInput").value = ""; persist(); renderAll(); };
+  $("officeClear").onclick = () => { state.office = state.office.filter(i => !i.done); persist(); renderAll(); };
+  $("personalClear").onclick = () => { state.personal = state.personal.filter(i => !i.done); persist(); renderAll(); };
+
+  // ---------- nav ----------
+  const views = ["focus","business","personal","mail","setup"];
+  function show(v) {
+    if (!views.includes(v)) v = "focus";
+    if ((v === "personal" && !state.cfg.mods.personal) || (v === "mail" && !state.cfg.mods.mail)) v = "focus";
+    document.querySelectorAll(".view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
+    document.querySelectorAll("nav button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+    if (v === "setup") fillSetup();
+    if (location.hash !== "#" + v) try { history.replaceState(null, "", "#" + v); } catch (e) {}
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("nav button").forEach(b => b.onclick = () => show(b.dataset.v));
+  window.addEventListener("hashchange", () => show(location.hash.slice(1)));
+
+  function renderAll() { renderList("office"); renderList("personal"); renderHealth(); renderDecisions(); renderMail(); renderFocus(); }
+  applyMods(); renderTags(); renderAll(); ohStatus(); chrome();
+  if (firstRun) $("welcome").classList.add("on");
+  setInterval(() => { ohStatus(); renderFocus(); }, 60000);
+  show(location.hash.slice(1) || "focus");
+})();
+</script>
+</body>
+</html>
