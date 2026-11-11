@@ -72,7 +72,7 @@
   .exc-row.hot{border-color:rgba(212,172,108,.45)}
 
   /* Sections */
-  details.sec{border-top:1px solid var(--line);padding:4px 0}
+  details.sec{border-top:1px solid var(--line);padding:4px 0;scroll-margin-top:70px}
   details.sec>summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;min-height:56px;padding:6px 2px}
   details.sec>summary::-webkit-details-marker{display:none}
   .sec-title{font:700 18px/1.2 Manrope,Inter,system-ui,sans-serif}
@@ -347,6 +347,20 @@
       <summary><div><span class="sec-title">Decisions Owed</span><span class="sec-sub">Make the call. It goes on the record.</span></div><span class="chev">›</span></summary>
       <div class="sec-body"><div class="wrapcard" id="focusDec"></div></div>
     </details>
+    <details class="sec" open id="secDates">
+      <summary><div><span class="sec-title">Reminders</span><span class="sec-sub">Anything with a date. Add to Calendar and your phone reminds you.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body">
+        <div id="datesBody"></div>
+        <button class="addlink" type="button" data-open="dateForm">+ Add a reminder</button>
+        <form class="formcard" id="dateForm" hidden>
+          <input id="dName" placeholder="What (e.g. Close the Harbor deal, Aunt Susie's birthday)" maxlength="80" required>
+          <div class="r"><input id="dDate" type="date" required aria-label="Date"><input id="dTime" type="time" aria-label="Time (optional)"></div>
+          <div class="r" style="margin-top:8px"><select id="dRepeat" aria-label="Repeat"><option value="none">Once</option><option value="weekly">Every week</option><option value="monthly">Every month</option><option value="yearly">Every year</option></select></div>
+          <div class="r" style="margin-top:8px"><button class="btn solid" type="submit">Add</button><button class="btn ghost" type="button" data-close="dateForm">Cancel</button></div>
+        </form>
+        <p class="hint">With a time: alerts at the time and 1 hour before. No time: 8 AM that day and the day before.</p>
+      </div>
+    </details>
   </div>
 
   <!-- BUSINESS -->
@@ -436,19 +450,6 @@
           <div class="r" style="margin-top:8px"><label class="ck"><input type="checkbox" id="uTrip" checked> Travel</label></div>
           <div class="r" style="margin-top:8px"><button class="btn solid" type="submit">Add</button><button class="btn ghost" type="button" data-close="upForm">Cancel</button></div>
         </form>
-      </div>
-    </details>
-    <details class="sec" open id="secDates">
-      <summary><div><span class="sec-title">Important dates</span><span class="sec-sub">Birthdays, anniversaries. Add to Calendar for a reminder on your phone.</span></div><span class="chev">›</span></summary>
-      <div class="sec-body">
-        <div id="datesBody"></div>
-        <button class="addlink" type="button" data-open="dateForm">+ Add a date</button>
-        <form class="formcard" id="dateForm" hidden>
-          <input id="dName" placeholder="Who or what (e.g. Aunt Susie)" maxlength="60" required>
-          <div class="r"><input id="dDate" type="date" required aria-label="Date"><select id="dKind" aria-label="Type"><option value="birthday">Birthday</option><option value="anniversary">Anniversary</option><option value="other">Other (yearly)</option></select></div>
-          <div class="r" style="margin-top:8px"><button class="btn solid" type="submit">Add</button><button class="btn ghost" type="button" data-close="dateForm">Cancel</button></div>
-        </form>
-        <p class="hint">Add to Calendar sets a yearly reminder at 8 AM on the day and 8 AM the day before. Your phone's calendar sends the notification.</p>
       </div>
     </details>
     <details class="sec" open>
@@ -663,11 +664,12 @@
         { id: uid(), title: "Lisbon — anniversary trip", start: isoIn(18), end: isoIn(25), travel: true },
         { id: uid(), title: "Austin — client offsite", start: isoIn(40), end: isoIn(42), travel: true }
       ],
-      dates: [
-        { id: uid(), name: "Priya", kind: "birthday", md: isoIn(3).slice(5) },
-        { id: uid(), name: "Mom", kind: "birthday", md: isoIn(6).slice(5) },
-        { id: uid(), name: "Wedding", kind: "anniversary", md: isoIn(21).slice(5) },
-        { id: uid(), name: "Marcus", kind: "birthday", md: isoIn(52).slice(5) }
+      reminders: [
+        { id: uid(), title: "Close the Harbor renewal", date: isoIn(2), time: "14:00", repeat: "none" },
+        { id: uid(), title: "Priya's birthday", date: isoIn(3), time: "", repeat: "yearly" },
+        { id: uid(), title: "Mom's birthday", date: isoIn(6), time: "", repeat: "yearly" },
+        { id: uid(), title: "Send monthly invoices", date: isoIn(9), time: "09:00", repeat: "monthly" },
+        { id: uid(), title: "Wedding anniversary", date: isoIn(21), time: "", repeat: "yearly" }
       ],
       office: [
         it("CLIENT","Send revised scope to Harbor & Co.", { star: true, ts: y }),
@@ -715,7 +717,7 @@
         mods: Object.assign({}, ALLMODS, { mail: false })
       },
       office: [], personal: [], decisions: [], log: [],
-      ventures: [], milestones: [], briefs: [], trips: [], dates: [],
+      ventures: [], milestones: [], briefs: [], trips: [], reminders: [],
       health: { week: weekKey(), counts: {} }, weekDone: { week: weekKey(), n: 0 }, parked: [],
       stats: newStats()
     };
@@ -754,7 +756,12 @@
   function fill(s) {
     if (!s.stats) s.stats = newStats();
     const b = blankState(); s.cfg = Object.assign(b.cfg, s.cfg); s.cfg.mods = Object.assign(b.cfg.mods, s.cfg.mods);
-    ["ventures","milestones","briefs","trips","dates"].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
+    ["ventures","milestones","briefs","trips","reminders"].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
+    if (Array.isArray(s.dates)) { // v0.8 Important dates → v0.9 Reminders
+      s.dates.forEach(d => { const lbl = d.kind === "birthday" ? (/birthday/i.test(d.name) ? d.name : d.name + "'s birthday") : d.kind === "anniversary" ? (/anniversary/i.test(d.name) ? d.name : d.name + " anniversary") : d.name;
+        s.reminders.push({ id: d.id, title: lbl, date: new Date().getFullYear() + "-" + d.md, time: "", repeat: "yearly", cal: !!d.cal }); });
+      delete s.dates;
+    }
     s.parked = s.parked || []; s.health = s.health || b.health; s.weekDone = s.weekDone || b.weekDone; s.v = 5; s.mode = s.mode || "blank"; return s;
   }
   function normalize(s) {
@@ -911,8 +918,8 @@
       if (alerts || need) addExc("Mail", (alerts ? alerts + " alert · " : "") + need + " need you", !!alerts, () => show("mail"));
     }
     if (state.cfg.mods.dates) {
-      const soonD = upcomingDates().filter(d => d.n <= 7);
-      if (soonD.length) { const d = soonD[0]; addExc("Dates", dateLabel(d) + " · " + (d.n === 0 ? "today" : d.n === 1 ? "tomorrow" : "in " + d.n + " days") + (soonD.length > 1 ? " (+" + (soonD.length - 1) + " more this week)" : ""), d.n <= 1, () => show("personal")); }
+      const soonR = upcomingReminders().filter(r => r.n <= 7);
+      if (soonR.length) { const r = soonR[0]; addExc("Remind", r.title + " · " + remWhen(r) + (soonR.length > 1 ? " (+" + (soonR.length - 1) + " more this week)" : ""), r.n <= 1, () => { const d = $("secDates"); d.open = true; d.scrollIntoView({ behavior: "smooth", block: "start" }); }); }
     }
     if (pri.length < 3) addExc("Focus", pri.length + " of 3 priorities set.", false, () => show("business"));
 
@@ -1215,61 +1222,75 @@
     });
   }
 
-  // ---------- important dates ----------
-  function nextOcc(md) {
-    const [m, d] = String(md || "").split("-").map(Number); if (!m || !d) return null;
-    const t0 = new Date(startOfToday()); let y = t0.getFullYear();
-    const mk = yy => { const leap = (yy % 4 === 0 && yy % 100 !== 0) || yy % 400 === 0; return new Date(yy, m - 1, (m === 2 && d === 29 && !leap) ? 28 : d); };
-    let dt = mk(y); if (dt < t0) dt = mk(y + 1); return dt;
+  // ---------- reminders ----------
+  const addMonths = (dt, n) => { const d = new Date(dt.getFullYear(), dt.getMonth() + n, 1); const last = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate(); d.setDate(Math.min(dt.getDate(), last)); return d; };
+  function nextOcc(r) {
+    const base = parseYmd(r.date); if (!base) return null;
+    const t0 = new Date(startOfToday());
+    if (base >= t0 || r.repeat === "none") return base;
+    let d = base, i = 0;
+    while (d < t0 && i++ < 2000) d = r.repeat === "weekly" ? new Date(d.getFullYear(), d.getMonth(), d.getDate() + 7) : addMonths(base, (r.repeat === "monthly" ? 1 : 12) * i);
+    return d;
   }
-  const dateLabel = d => d.kind === "birthday" ? (/birthday/i.test(d.name) ? d.name : d.name + "'s birthday") : d.kind === "anniversary" ? (/anniversary/i.test(d.name) ? d.name : d.name + " anniversary") : d.name;
-  function upcomingDates() {
-    return (state.dates || []).map(d => { const dt = nextOcc(d.md); return dt ? Object.assign({}, d, { dt, n: daysTo(dt) }) : null; }).filter(Boolean).sort((a, b) => a.n - b.n);
+  function upcomingReminders() {
+    return (state.reminders || []).map(r => { const dt = nextOcc(r); return dt ? Object.assign({}, r, { dt, n: daysTo(dt) }) : null; })
+      .filter(r => r && r.n >= 0).sort((a, b) => a.n - b.n || String(a.time || "99").localeCompare(String(b.time || "99")));
   }
-  const icsEsc = t => String(t).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  const WD = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const remWhen = r => (r.n === 0 ? "Today" : r.n === 1 ? "Tomorrow" : r.n < 7 ? WD[r.dt.getDay()] : fmtD(r.dt)) + (r.time ? " · " + fmt(r.time) : "");
+  const REP = { none: "", weekly: "Every week", monthly: "Every month", yearly: "Every year" };
+  const icsEsc = t => String(t).replace(/\\/g, "\\\\").replace(/;/g, "\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
   const ymdC = dt => dt.getFullYear() + String(dt.getMonth() + 1).padStart(2, "0") + String(dt.getDate()).padStart(2, "0");
-  function buildIcs(d) {
-    const start = nextOcc(d.md), end = new Date(start); end.setDate(end.getDate() + 1);
-    const label = dateLabel(d), stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
-    return [
-      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Command Hub//Important Dates//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
-      "BEGIN:VEVENT", "UID:" + d.id + "@commandhub", "DTSTAMP:" + stamp,
-      "DTSTART;VALUE=DATE:" + ymdC(start), "DTEND;VALUE=DATE:" + ymdC(end), "RRULE:FREQ=YEARLY",
-      "SUMMARY:" + icsEsc(label), "TRANSP:TRANSPARENT",
-      "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc("Today: " + label), "TRIGGER:PT8H", "END:VALARM",
-      "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc("Tomorrow: " + label), "TRIGGER:-PT16H", "END:VALARM",
-      "END:VEVENT", "END:VCALENDAR"
-    ].join("\r\n") + "\r\n";
+  const trig = min => (min < 0 ? "-" : "") + "PT" + Math.abs(min) + "M";
+  function buildIcs(r) {
+    const start = nextOcc(r), stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+    const L = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Command Hub//Reminders//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+      "BEGIN:VEVENT", "UID:" + r.id + "@commandhub", "DTSTAMP:" + stamp];
+    let alarms;
+    if (r.time) {
+      const [h, m] = r.time.split(":").map(Number), hh = String(h).padStart(2, "0"), mm = String(m).padStart(2, "0");
+      const endH = String((h + 1) % 24).padStart(2, "0");
+      L.push("DTSTART:" + ymdC(start) + "T" + hh + mm + "00", "DTEND:" + ymdC(start) + "T" + (h === 23 ? "2359" : endH + mm) + "00");
+      alarms = [[0, "Now: "], [-60, "In 1 hour: "]];
+    } else {
+      const end = new Date(start); end.setDate(end.getDate() + 1);
+      L.push("DTSTART;VALUE=DATE:" + ymdC(start), "DTEND;VALUE=DATE:" + ymdC(end), "TRANSP:TRANSPARENT");
+      alarms = [[480, "Today: "], [-960, "Tomorrow: "]];
+    }
+    if (REP[r.repeat]) L.push("RRULE:FREQ=" + r.repeat.toUpperCase());
+    L.push("SUMMARY:" + icsEsc(r.title));
+    alarms.forEach(([min, pre]) => L.push("BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc(pre + r.title), "TRIGGER:" + trig(min), "END:VALARM"));
+    L.push("END:VEVENT", "END:VCALENDAR");
+    return L.join("\r\n") + "\r\n";
   }
-  function addToCalendar(d) {
-    const ics = buildIcs(d), fname = dateLabel(d).replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() + ".ics";
+  function addToCalendar(r) {
+    const ics = buildIcs(r), fname = (r.title.replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() || "reminder") + ".ics";
     window._lastIcs = ics;
     try {
       const a = document.createElement("a");
       a.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics); a.download = fname;
       document.body.appendChild(a); a.click(); a.remove();
     } catch (e) { toast("Couldn't open your calendar"); return; }
-    const real = (state.dates || []).find(x => x.id === d.id); if (real) { real.cal = true; track("calAdds"); persist(); }
+    const real = (state.reminders || []).find(x => x.id === r.id); if (real) { real.cal = true; track("calAdds"); persist(); }
     renderDates(); toast("Opening your calendar · tap Add");
   }
   function renderDates() {
     const body = $("datesBody"); body.textContent = "";
-    const list = upcomingDates();
-    if (!list.length) { body.appendChild(el("div", "empty", "No dates yet. Add birthdays and anniversaries you never want to miss.")); return; }
+    const list = upcomingReminders();
+    if (!list.length) { body.appendChild(el("div", "empty", "No reminders yet. Add anything with a date: a deal to close, a call, a birthday.")); return; }
     const w = el("div", "wrapcard");
-    list.forEach(d => {
-      const r = el("div", "ms" + (d.n <= 7 ? " soon" : ""));
-      const dt = el("div", "ms-date"); dt.append(el("b", null, String(d.dt.getDate())), el("span", null, MON[d.dt.getMonth()])); r.appendChild(dt);
-      const kind = d.kind === "birthday" ? "Birthday" : d.kind === "anniversary" ? "Anniversary" : "Yearly";
-      const when = d.n === 0 ? "Today" : d.n === 1 ? "Tomorrow" : "In " + d.n + " days";
-      const b = el("div", "ms-body"); b.append(el("div", "ms-t", dateLabel(d)), el("div", "ms-m", kind + " · " + when)); r.appendChild(b);
+    list.forEach(r => {
+      const row = el("div", "ms" + (r.n <= 1 ? " soon" : ""));
+      const dt = el("div", "ms-date"); dt.append(el("b", null, String(r.dt.getDate())), el("span", null, MON[r.dt.getMonth()])); row.appendChild(dt);
+      const b = el("div", "ms-body"); const lw = r.n < 7 ? remWhen(r) : "In " + r.n + " days" + (r.time ? " · " + fmt(r.time) : "");
+      b.append(el("div", "ms-t", r.title), el("div", "ms-m", lw + (REP[r.repeat] ? " · " + REP[r.repeat] : ""))); row.appendChild(b);
       const brow = el("div"); brow.style.marginTop = "8px"; b.appendChild(brow);
-      const btn = el("button", "ms-btn cal" + (d.cal ? " on" : ""), d.cal ? "In calendar ✓" : "Add to Calendar"); btn.type = "button";
-      btn.title = d.cal ? "Tap to add again" : "Adds a yearly reminder to your phone's calendar";
-      btn.onclick = () => addToCalendar(d);
+      const btn = el("button", "ms-btn cal" + (r.cal ? " on" : ""), r.cal ? "In calendar ✓" : "Add to Calendar"); btn.type = "button";
+      btn.title = r.cal ? "Tap to add again" : "Adds this reminder to your phone's calendar";
+      btn.onclick = () => addToCalendar(r); brow.appendChild(btn);
       const x = el("button", "ib", "×"); x.type = "button"; x.setAttribute("aria-label", "Remove"); x.style.alignSelf = "center";
-      x.onclick = () => { const at = state.dates.findIndex(y => y.id === d.id); const gone = state.dates[at]; state.dates.splice(at, 1); persist(); renderAll(); toast("Removed", () => { state.dates.splice(at, 0, gone); persist(); renderAll(); }); };
-      brow.appendChild(btn); r.append(x); w.appendChild(r);
+      x.onclick = () => { const at = state.reminders.findIndex(y => y.id === r.id); const gone = state.reminders[at]; state.reminders.splice(at, 1); persist(); renderAll(); toast("Removed", () => { state.reminders.splice(at, 0, gone); persist(); renderAll(); }); };
+      row.append(x); w.appendChild(row);
     });
     body.appendChild(w);
   }
@@ -1294,10 +1315,10 @@
     persist(); closeForm("briefForm"); renderBriefs(); toast("Brief saved");
   };
   $("dateForm").onsubmit = e => {
-    e.preventDefault(); const name = $("dName").value.trim(), date = $("dDate").value; if (!name || !date) return;
-    state.dates = state.dates || [];
-    state.dates.push({ id: uid(), name, kind: $("dKind").value, md: date.slice(5) });
-    track("datesAdded"); persist(); closeForm("dateForm"); renderAll(); toast("Date added · tap Add to Calendar for a reminder");
+    e.preventDefault(); const title = $("dName").value.trim(), date = $("dDate").value; if (!title || !date) return;
+    state.reminders = state.reminders || [];
+    state.reminders.push({ id: uid(), title, date, time: $("dTime").value || "", repeat: $("dRepeat").value });
+    track("datesAdded"); persist(); closeForm("dateForm"); renderAll(); toast("Reminder added · tap Add to Calendar");
   };
   $("upForm").onsubmit = e => {
     e.preventDefault(); const title = $("uTitle").value.trim(), start = $("uStart").value; if (!title || !start) return;
@@ -1326,7 +1347,7 @@
     ["rhythm","Operating Rhythm","Daily to annual cadence"],
     ["personal","Personal","Today's list + weekly rhythm"],
     ["trips","Coming up","Trips and plans"],
-    ["dates","Important dates","Birthdays and anniversaries, with calendar reminders"],
+    ["dates","Reminders","Dated reminders with Add to Calendar"],
     ["mail","Mail","Stage 1 triage (sample emails)"]
   ];
   function fillSetup() {
@@ -1448,7 +1469,7 @@
     { v: "business", sel: "#officeForm", up: true, h: "Office Hours: park it, mark it", p: "Drop tasks in with a tag. Tap to mark ✓, hold to edit. Done items clear themselves tomorrow." },
     { v: "business", sel: "#portBody", h: "The whole portfolio, one screen", p: "Every client and venture on one card. Tap a status pill to cycle Active → At risk → Blocked → Paused." },
     { v: "business", sel: "#msBody", h: "Milestones and gates", p: "Dates that matter and calls that need approval. They feed the Overdue and Approaching alerts on Focus." },
-    { v: "personal", sel: "#upBody", h: "Business is business. This is yours.", p: "Trips with countdowns, birthdays that remind you on your phone, today's personal list, and a weekly habit rhythm." },
+    { v: "personal", sel: "#upBody", h: "Business is business. This is yours.", p: "Trips with countdowns, today's personal list, and a weekly habit rhythm that resets Monday." },
     { v: "setup", sel: "#mods", h: "Your Rules", p: "Name, theme, hours, tags, habits. Switch off any lane you don't need. Ready to try it with your own day?", last: true }
   ];
   let tStep = -1;
@@ -1480,7 +1501,7 @@
 
   function statsText() {
     const st = state.stats || newStats(), d0 = new Date(st.since);
-    const lanes = [["Portfolio", state.ventures.length], ["Milestones", state.milestones.length], ["Briefs", state.briefs.length], ["Trips", state.trips.length], ["Dates", (state.dates || []).length]].map(([n, c]) => n + " " + c).join(" · ");
+    const lanes = [["Portfolio", state.ventures.length], ["Milestones", state.milestones.length], ["Briefs", state.briefs.length], ["Trips", state.trips.length], ["Reminders", (state.reminders || []).length]].map(([n, c]) => n + " " + c).join(" · ");
     const mins = st.firstDoneAt ? (st.firstDoneAt - st.since) / 60000 : null;
     const ttf = mins == null ? "not yet" : mins < 1 ? "under 1 min" : Math.round(mins) + " min";
     const off = Object.entries(state.cfg.mods).filter(([, v]) => !v).map(([k]) => k).join(", ") || "none";
