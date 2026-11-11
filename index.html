@@ -172,6 +172,7 @@
   .formcard textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:10px 12px;min-height:80px;outline:0;margin-bottom:8px;resize:vertical}
   .formcard .r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .formcard .r input{margin-bottom:0;flex:1;min-width:130px}
+  .formcard select{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:10px;color:var(--text);font-size:14px;padding:0 12px;min-height:42px;outline:0;flex:1;min-width:130px}
   .formcard label.ck{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--muted);white-space:nowrap}
   .formcard label.ck input{width:auto;min-height:0;margin:0}
   .formcard .btn{min-height:42px}
@@ -189,6 +190,9 @@
   .ms.gate .ms-date b{color:var(--gold)}
   .ms.past{opacity:.5}
   .ms.late .ms-date b,.ms.late .ms-m{color:var(--bad)}
+  .ms.soon .ms-date b{color:var(--gold)}
+  .ms-btn.cal{min-width:0;min-height:36px;padding:0 12px;font-size:12.5px}
+  .ms-btn.cal.on{border-color:var(--ok);color:var(--ok)}
   .ms-btn{flex:none;align-self:center;min-height:40px;min-width:88px;padding:0 10px;border-radius:10px;border:1px solid var(--gold);background:transparent;color:var(--gold);font:600 13px Inter,system-ui,sans-serif;cursor:pointer}
   .ms.past .ms-btn{border-color:var(--line);color:var(--muted)}
 
@@ -434,6 +438,19 @@
         </form>
       </div>
     </details>
+    <details class="sec" open id="secDates">
+      <summary><div><span class="sec-title">Important dates</span><span class="sec-sub">Birthdays, anniversaries. Add to Calendar for a reminder on your phone.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body">
+        <div id="datesBody"></div>
+        <button class="addlink" type="button" data-open="dateForm">+ Add a date</button>
+        <form class="formcard" id="dateForm" hidden>
+          <input id="dName" placeholder="Who or what (e.g. Aunt Susie)" maxlength="60" required>
+          <div class="r"><input id="dDate" type="date" required aria-label="Date"><select id="dKind" aria-label="Type"><option value="birthday">Birthday</option><option value="anniversary">Anniversary</option><option value="other">Other (yearly)</option></select></div>
+          <div class="r" style="margin-top:8px"><button class="btn solid" type="submit">Add</button><button class="btn ghost" type="button" data-close="dateForm">Cancel</button></div>
+        </form>
+        <p class="hint">Add to Calendar sets a yearly reminder at 8 AM on the day and 8 AM the day before. Your phone's calendar sends the notification.</p>
+      </div>
+    </details>
     <details class="sec" open>
       <summary><div><span class="sec-title">Today</span><span class="sec-sub">Protect the time that protects you.</span></div><span class="chev">›</span></summary>
       <div class="sec-body">
@@ -605,7 +622,7 @@
     ["Quarterly","90-Day Focus call","Check milestones and gates. Set no more than 3 priorities."],
     ["Annual","Mid-December · half day","Theme for the year · go / pause / close calls"]
   ];
-  const ALLMODS = { personal: true, mail: true, decisions: true, closeout: true, portfolio: true, milestones: true, briefs: true, rhythm: true, trips: true };
+  const ALLMODS = { personal: true, mail: true, decisions: true, closeout: true, portfolio: true, milestones: true, briefs: true, rhythm: true, trips: true, dates: true };
 
   // ---------- sample + blank ----------
   function seed() {
@@ -645,6 +662,12 @@
         { id: uid(), title: "Mom's birthday dinner", start: isoIn(6), end: isoIn(6), travel: false },
         { id: uid(), title: "Lisbon — anniversary trip", start: isoIn(18), end: isoIn(25), travel: true },
         { id: uid(), title: "Austin — client offsite", start: isoIn(40), end: isoIn(42), travel: true }
+      ],
+      dates: [
+        { id: uid(), name: "Priya", kind: "birthday", md: isoIn(3).slice(5) },
+        { id: uid(), name: "Mom", kind: "birthday", md: isoIn(6).slice(5) },
+        { id: uid(), name: "Wedding", kind: "anniversary", md: isoIn(21).slice(5) },
+        { id: uid(), name: "Marcus", kind: "birthday", md: isoIn(52).slice(5) }
       ],
       office: [
         it("CLIENT","Send revised scope to Harbor & Co.", { star: true, ts: y }),
@@ -692,7 +715,7 @@
         mods: Object.assign({}, ALLMODS, { mail: false })
       },
       office: [], personal: [], decisions: [], log: [],
-      ventures: [], milestones: [], briefs: [], trips: [],
+      ventures: [], milestones: [], briefs: [], trips: [], dates: [],
       health: { week: weekKey(), counts: {} }, weekDone: { week: weekKey(), n: 0 }, parked: [],
       stats: newStats()
     };
@@ -731,7 +754,7 @@
   function fill(s) {
     if (!s.stats) s.stats = newStats();
     const b = blankState(); s.cfg = Object.assign(b.cfg, s.cfg); s.cfg.mods = Object.assign(b.cfg.mods, s.cfg.mods);
-    ["ventures","milestones","briefs","trips"].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
+    ["ventures","milestones","briefs","trips","dates"].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
     s.parked = s.parked || []; s.health = s.health || b.health; s.weekDone = s.weekDone || b.weekDone; s.v = 5; s.mode = s.mode || "blank"; return s;
   }
   function normalize(s) {
@@ -886,6 +909,10 @@
     if (state.cfg.mods.mail) {
       const alerts = MAIL.filter(m => m.kind === "alert").length, need = MAIL.filter(m => m.kind === "urgent" && !state.parked.includes(m.id)).length;
       if (alerts || need) addExc("Mail", (alerts ? alerts + " alert · " : "") + need + " need you", !!alerts, () => show("mail"));
+    }
+    if (state.cfg.mods.dates) {
+      const soonD = upcomingDates().filter(d => d.n <= 7);
+      if (soonD.length) { const d = soonD[0]; addExc("Dates", dateLabel(d) + " · " + (d.n === 0 ? "today" : d.n === 1 ? "tomorrow" : "in " + d.n + " days") + (soonD.length > 1 ? " (+" + (soonD.length - 1) + " more this week)" : ""), d.n <= 1, () => show("personal")); }
     }
     if (pri.length < 3) addExc("Focus", pri.length + " of 3 priorities set.", false, () => show("business"));
 
@@ -1188,6 +1215,65 @@
     });
   }
 
+  // ---------- important dates ----------
+  function nextOcc(md) {
+    const [m, d] = String(md || "").split("-").map(Number); if (!m || !d) return null;
+    const t0 = new Date(startOfToday()); let y = t0.getFullYear();
+    const mk = yy => { const leap = (yy % 4 === 0 && yy % 100 !== 0) || yy % 400 === 0; return new Date(yy, m - 1, (m === 2 && d === 29 && !leap) ? 28 : d); };
+    let dt = mk(y); if (dt < t0) dt = mk(y + 1); return dt;
+  }
+  const dateLabel = d => d.kind === "birthday" ? (/birthday/i.test(d.name) ? d.name : d.name + "'s birthday") : d.kind === "anniversary" ? (/anniversary/i.test(d.name) ? d.name : d.name + " anniversary") : d.name;
+  function upcomingDates() {
+    return (state.dates || []).map(d => { const dt = nextOcc(d.md); return dt ? Object.assign({}, d, { dt, n: daysTo(dt) }) : null; }).filter(Boolean).sort((a, b) => a.n - b.n);
+  }
+  const icsEsc = t => String(t).replace(/\\/g, "\\\\").replace(/;/g, "\\;").replace(/,/g, "\\,").replace(/\n/g, "\\n");
+  const ymdC = dt => dt.getFullYear() + String(dt.getMonth() + 1).padStart(2, "0") + String(dt.getDate()).padStart(2, "0");
+  function buildIcs(d) {
+    const start = nextOcc(d.md), end = new Date(start); end.setDate(end.getDate() + 1);
+    const label = dateLabel(d), stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d+/, "");
+    return [
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Command Hub//Important Dates//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+      "BEGIN:VEVENT", "UID:" + d.id + "@commandhub", "DTSTAMP:" + stamp,
+      "DTSTART;VALUE=DATE:" + ymdC(start), "DTEND;VALUE=DATE:" + ymdC(end), "RRULE:FREQ=YEARLY",
+      "SUMMARY:" + icsEsc(label), "TRANSP:TRANSPARENT",
+      "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc("Today: " + label), "TRIGGER:PT8H", "END:VALARM",
+      "BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:" + icsEsc("Tomorrow: " + label), "TRIGGER:-PT16H", "END:VALARM",
+      "END:VEVENT", "END:VCALENDAR"
+    ].join("\r\n") + "\r\n";
+  }
+  function addToCalendar(d) {
+    const ics = buildIcs(d), fname = dateLabel(d).replace(/[^A-Za-z0-9]+/g, "-").replace(/^-|-$/g, "").toLowerCase() + ".ics";
+    window._lastIcs = ics;
+    try {
+      const a = document.createElement("a");
+      a.href = "data:text/calendar;charset=utf-8," + encodeURIComponent(ics); a.download = fname;
+      document.body.appendChild(a); a.click(); a.remove();
+    } catch (e) { toast("Couldn't open your calendar"); return; }
+    const real = (state.dates || []).find(x => x.id === d.id); if (real) { real.cal = true; track("calAdds"); persist(); }
+    renderDates(); toast("Opening your calendar · tap Add");
+  }
+  function renderDates() {
+    const body = $("datesBody"); body.textContent = "";
+    const list = upcomingDates();
+    if (!list.length) { body.appendChild(el("div", "empty", "No dates yet. Add birthdays and anniversaries you never want to miss.")); return; }
+    const w = el("div", "wrapcard");
+    list.forEach(d => {
+      const r = el("div", "ms" + (d.n <= 7 ? " soon" : ""));
+      const dt = el("div", "ms-date"); dt.append(el("b", null, String(d.dt.getDate())), el("span", null, MON[d.dt.getMonth()])); r.appendChild(dt);
+      const kind = d.kind === "birthday" ? "Birthday" : d.kind === "anniversary" ? "Anniversary" : "Yearly";
+      const when = d.n === 0 ? "Today" : d.n === 1 ? "Tomorrow" : "In " + d.n + " days";
+      const b = el("div", "ms-body"); b.append(el("div", "ms-t", dateLabel(d)), el("div", "ms-m", kind + " · " + when)); r.appendChild(b);
+      const brow = el("div"); brow.style.marginTop = "8px"; b.appendChild(brow);
+      const btn = el("button", "ms-btn cal" + (d.cal ? " on" : ""), d.cal ? "In calendar ✓" : "Add to Calendar"); btn.type = "button";
+      btn.title = d.cal ? "Tap to add again" : "Adds a yearly reminder to your phone's calendar";
+      btn.onclick = () => addToCalendar(d);
+      const x = el("button", "ib", "×"); x.type = "button"; x.setAttribute("aria-label", "Remove"); x.style.alignSelf = "center";
+      x.onclick = () => { const at = state.dates.findIndex(y => y.id === d.id); const gone = state.dates[at]; state.dates.splice(at, 1); persist(); renderAll(); toast("Removed", () => { state.dates.splice(at, 0, gone); persist(); renderAll(); }); };
+      brow.appendChild(btn); r.append(x); w.appendChild(r);
+    });
+    body.appendChild(w);
+  }
+
   // ---------- forms for new sections ----------
   document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => { const f = $(b.dataset.open); f.hidden = false; b.hidden = true; const i = f.querySelector("input"); if (i) i.focus(); });
   const closeForm = id => { const f = $(id); f.reset(); f.hidden = true; const b = document.querySelector('[data-open="' + id + '"]'); if (b) b.hidden = false; };
@@ -1206,6 +1292,12 @@
     e.preventDefault(); const title = $("bTitle").value.trim(); if (!title) return;
     state.briefs.push({ id: uid(), title, kind: "Brief", date: dayKey(), summary: $("bSum").value.trim(), items: $("bItems").value.split("\n").map(s => s.trim()).filter(Boolean) });
     persist(); closeForm("briefForm"); renderBriefs(); toast("Brief saved");
+  };
+  $("dateForm").onsubmit = e => {
+    e.preventDefault(); const name = $("dName").value.trim(), date = $("dDate").value; if (!name || !date) return;
+    state.dates = state.dates || [];
+    state.dates.push({ id: uid(), name, kind: $("dKind").value, md: date.slice(5) });
+    track("datesAdded"); persist(); closeForm("dateForm"); renderAll(); toast("Date added · tap Add to Calendar for a reminder");
   };
   $("upForm").onsubmit = e => {
     e.preventDefault(); const title = $("uTitle").value.trim(), start = $("uStart").value; if (!title || !start) return;
@@ -1234,6 +1326,7 @@
     ["rhythm","Operating Rhythm","Daily to annual cadence"],
     ["personal","Personal","Today's list + weekly rhythm"],
     ["trips","Coming up","Trips and plans"],
+    ["dates","Important dates","Birthdays and anniversaries, with calendar reminders"],
     ["mail","Mail","Stage 1 triage (sample emails)"]
   ];
   function fillSetup() {
@@ -1272,7 +1365,7 @@
     const n = 2 + (state.cfg.mods.personal ? 1 : 0) + (state.cfg.mods.mail ? 1 : 0);
     document.querySelector(".tabs").style.gridTemplateColumns = "repeat(" + n + ",1fr)";
     const m = state.cfg.mods;
-    [["secDec","decisions"],["secLog","decisions"],["secCO","closeout"],["secPort","portfolio"],["secMS","milestones"],["secBrief","briefs"],["secRh","rhythm"],["secUp","trips"]]
+    [["secDec","decisions"],["secLog","decisions"],["secCO","closeout"],["secPort","portfolio"],["secMS","milestones"],["secBrief","briefs"],["secRh","rhythm"],["secUp","trips"],["secDates","dates"]]
       .forEach(([id, k]) => $(id).style.display = m[k] ? "" : "none");
   }
 
@@ -1355,7 +1448,7 @@
     { v: "business", sel: "#officeForm", up: true, h: "Office Hours: park it, mark it", p: "Drop tasks in with a tag. Tap to mark ✓, hold to edit. Done items clear themselves tomorrow." },
     { v: "business", sel: "#portBody", h: "The whole portfolio, one screen", p: "Every client and venture on one card. Tap a status pill to cycle Active → At risk → Blocked → Paused." },
     { v: "business", sel: "#msBody", h: "Milestones and gates", p: "Dates that matter and calls that need approval. They feed the Overdue and Approaching alerts on Focus." },
-    { v: "personal", sel: "#upBody", h: "Business is business. This is yours.", p: "Trips with countdowns, today's personal list, and a weekly habit rhythm that resets Monday." },
+    { v: "personal", sel: "#upBody", h: "Business is business. This is yours.", p: "Trips with countdowns, birthdays that remind you on your phone, today's personal list, and a weekly habit rhythm." },
     { v: "setup", sel: "#mods", h: "Your Rules", p: "Name, theme, hours, tags, habits. Switch off any lane you don't need. Ready to try it with your own day?", last: true }
   ];
   let tStep = -1;
@@ -1387,7 +1480,7 @@
 
   function statsText() {
     const st = state.stats || newStats(), d0 = new Date(st.since);
-    const lanes = [["Portfolio", state.ventures.length], ["Milestones", state.milestones.length], ["Briefs", state.briefs.length], ["Trips", state.trips.length]].map(([n, c]) => n + " " + c).join(" · ");
+    const lanes = [["Portfolio", state.ventures.length], ["Milestones", state.milestones.length], ["Briefs", state.briefs.length], ["Trips", state.trips.length], ["Dates", (state.dates || []).length]].map(([n, c]) => n + " " + c).join(" · ");
     const mins = st.firstDoneAt ? (st.firstDoneAt - st.since) / 60000 : null;
     const ttf = mins == null ? "not yet" : mins < 1 ? "under 1 min" : Math.round(mins) + " min";
     const off = Object.entries(state.cfg.mods).filter(([, v]) => !v).map(([k]) => k).join(", ") || "none";
@@ -1397,7 +1490,7 @@
       "Time to first task done: " + ttf,
       "Tasks added " + st.added + " · done " + st.done + " · edited " + st.edited + " · removed " + st.removed + " · starred " + st.starred,
       "Decisions logged " + st.decLogged + " · decided " + st.decMade,
-      "Habit check-ins " + st.habitLogs + " · " + lanes,
+      "Habit check-ins " + st.habitLogs + " · " + lanes + " · calendar adds " + (st.calAdds || 0),
       "Open now: " + state.office.filter(i => !i.done).length + " business · " + state.personal.filter(i => !i.done).length + " personal",
       "Home screen: " + (st.installed || isStandalone() ? "yes" : "no") + " · lanes off: " + off
     ].join("\n");
@@ -1496,7 +1589,7 @@
 
   function renderAll() {
     renderMast(); renderList("office"); renderList("personal"); renderHealth(); renderDecisions(); renderMail(); renderFocus();
-    renderCloseout(); renderPortfolio(); renderMilestones(); renderBriefs(); renderRhythm(); renderComingUp(); renderCounts();
+    renderCloseout(); renderPortfolio(); renderMilestones(); renderBriefs(); renderRhythm(); renderComingUp(); renderDates(); renderCounts();
   }
   applyMods(); renderTags(); renderAll(); ohStatus(); chrome();
   if (firstRun) openSheet("intro");
