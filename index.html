@@ -6,10 +6,11 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Hub">
+<meta name="apple-mobile-web-app-title" content="Command Hub">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="theme-color" content="#101820">
-<title>Hub — Prototype Demo</title>
+<meta name="description" content="Command Hub — your personal command center. Cut the noise. Take command.">
+<title>Command Hub — Your Personal Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -17,11 +18,12 @@
   :root{
     --bg:#101820; --card:#1D2934; --card2:#17222C; --line:#2A3846;
     --gold:#B69A64; --gold-dim:rgba(182,154,100,.14);
-    --text:#F5F3ED; --muted:#AEB8C2; --faint:#7C8894;
+    --text:#F5F3ED; --muted:#AEB8C2; --faint:#8E9AA6;
     --ok:#7DAF94; --warn:#D4AC6C; --bad:#D87979;
     --r:14px;
   }
   *{box-sizing:border-box}
+  [hidden]{display:none!important}
   html,body{margin:0;background:var(--bg);color:var(--text)}
   body{font:400 15px/1.5 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
   .wrap{max-width:680px;margin:0 auto;padding:28px 18px 64px}
@@ -31,7 +33,7 @@
   .mast{padding:4px 2px 22px;border-bottom:1px solid var(--line);margin-bottom:22px}
   .mast-top{display:flex;justify-content:space-between;align-items:center}
   .eyebrow{font:600 11px/1 Inter,system-ui,sans-serif;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
-  .rules-link{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;font:600 11px/1 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:8px 12px;cursor:pointer}
+  .rules-link{background:none;border:1px solid var(--line);color:var(--muted);border-radius:999px;font:600 11px/1 Inter,system-ui,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding:0 14px;min-height:36px;cursor:pointer}
   .rules-link.on{border-color:var(--gold);color:var(--gold)}
   .theme{font:700 30px/1.15 Manrope,Inter,system-ui,sans-serif;letter-spacing:.01em;margin:12px 0 6px;text-transform:uppercase}
   .tagline{color:var(--muted);margin:0}
@@ -81,7 +83,7 @@
   .day.today{border-color:var(--gold)}
   .day-h{display:flex;justify-content:space-between;font:600 13px/1 Inter,system-ui,sans-serif;color:var(--muted);margin-bottom:8px}
   .day.today .day-h{color:var(--gold)}
-  .item{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(255,255,255,.04);font-size:15px;cursor:pointer;user-select:none}
+  .item{-webkit-touch-callout:none;display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid rgba(255,255,255,.04);font-size:15px;cursor:pointer;user-select:none}
   .item:first-child{border-top:0}
   .item .tick{width:18px;flex:none;color:var(--faint);padding-top:1px}
   .item .txt{flex:1;min-width:0}
@@ -90,7 +92,8 @@
   .item.done .txt{text-decoration:line-through;text-decoration-color:rgba(174,184,194,.4)}
   .tag{font:600 10px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;color:var(--gold);border:1px solid rgba(182,154,100,.4);border-radius:4px;padding:3px 5px;margin-right:6px;vertical-align:1px}
   .lane{color:var(--muted);font-size:12px;margin-left:6px}
-  .ib{background:none;border:0;color:var(--faint);font-size:17px;cursor:pointer;padding:0 3px;line-height:1.2;min-height:28px}
+  .ib{background:none;border:0;color:var(--faint);font-size:18px;cursor:pointer;padding:0;line-height:1;min-width:40px;min-height:40px;margin:-8px -4px -8px 0;display:inline-grid;place-items:center;flex:none}
+  .item .edit-in{width:100%;background:var(--card2);border:1px solid var(--gold);border-radius:8px;color:var(--text);font:inherit;padding:6px 10px;outline:0}
   .ib.on{color:var(--gold)}
   .empty{color:var(--muted);font-size:14px;padding:4px 0;cursor:default}
   .note{background:var(--card2);border:1px dashed var(--line);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--muted)}
@@ -104,10 +107,10 @@
   .btn.solid{background:var(--gold);color:var(--bg)}
   .btn.ghost{border-color:var(--line);color:var(--muted)}
   .chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
-  .chip{font:600 10.5px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;color:var(--gold);border:1px solid rgba(182,154,100,.4);border-radius:6px;padding:7px 9px;background:none;cursor:pointer}
+  .chip{font:600 10.5px/1 Inter,system-ui,sans-serif;letter-spacing:.08em;color:var(--gold);border:1px solid rgba(182,154,100,.4);border-radius:6px;padding:0 11px;min-height:36px;background:none;cursor:pointer}
   .chip.sel{background:var(--gold);color:var(--bg);border-color:var(--gold)}
   .foot{display:flex;justify-content:space-between;margin-top:10px;font-size:12px;color:var(--faint)}
-  .link{background:none;border:0;color:var(--gold);font:500 13px Inter,system-ui,sans-serif;cursor:pointer;padding:0}
+  .link{background:none;border:0;color:var(--gold);font:500 13px Inter,system-ui,sans-serif;cursor:pointer;padding:0 2px;min-height:36px;display:inline-flex;align-items:center}
 
   /* Decisions */
   .dec{padding:12px 0;border-top:1px solid var(--line)}
@@ -153,7 +156,7 @@
   .mono{width:34px;height:34px;flex:none;border-radius:9px;background:var(--gold-dim);color:var(--gold);display:grid;place-items:center;font:700 13px Manrope,Inter,system-ui,sans-serif;margin-right:12px}
   .card-name{font:700 17px/1.2 Manrope,Inter,system-ui,sans-serif}
   .card-role{font-size:13px;color:var(--muted)}
-  .pill{font:600 11px/1 Inter,system-ui,sans-serif;padding:7px 10px;border-radius:999px;white-space:nowrap;display:inline-flex;gap:6px;align-items:center;background:var(--card2);color:var(--text);border:0;cursor:pointer}
+  .pill{font:600 11px/1 Inter,system-ui,sans-serif;padding:0 12px;min-height:34px;border-radius:999px;white-space:nowrap;display:inline-flex;gap:6px;align-items:center;background:var(--card2);color:var(--text);border:0;cursor:pointer}
   .pill i{width:7px;height:7px;border-radius:50%;display:inline-block}
   .kv{margin:12px 0 0;font-size:14px}
   .kv div{display:flex;gap:10px;padding:3px 0}
@@ -270,7 +273,9 @@
   .btn.danger.solid{background:var(--bad);color:var(--bg)}
   .btn:disabled{opacity:.4;cursor:not-allowed}
   .warnbar{display:none;font-size:12.5px;color:var(--bad);border:1px solid rgba(216,121,121,.5);border-radius:10px;padding:9px 12px;margin-bottom:16px}
-  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--text);color:var(--bg);font:500 14px Inter,system-ui,sans-serif;padding:9px 16px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--text);color:var(--bg);font:500 14px Inter,system-ui,sans-serif;padding:9px 16px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;display:flex;gap:14px;align-items:center;white-space:nowrap}
+  .toast.on.act{pointer-events:auto}
+  .toast button{background:none;border:0;color:#8A6B2E;font:700 14px Inter,system-ui,sans-serif;padding:6px 2px;min-height:32px;cursor:pointer}
   .toast.on{opacity:1}
   footer{margin-top:30px;color:var(--faint);font-size:12px;text-align:center}
   .pts{margin:16px 0 4px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:2px 14px}
@@ -283,11 +288,11 @@
 <div class="wrap">
   <div class="warnbar" id="noSave">This browser isn't saving. Use Rules → Backup before you close it.</div>
   <div class="demo" id="demoBar">
-    <div class="demo-t"><i></i>Live demo · sample company</div>
-    <p>You're inside a working Hub for a fictional studio. Tap, star, decide — nothing here touches your own data.</p>
+    <div class="demo-t"><i></i>Command Hub · live demo</div>
+    <p>You're inside a working command center for a fictional studio. Tap, star, decide — nothing here touches your own data.</p>
     <div class="row2"><button class="btn solid" id="tourBtn" type="button">Explore Demo</button><button class="btn" id="mineBtn" type="button">Make It Mine</button></div>
   </div>
-  <div class="mine" id="mineBar"><span>Your Hub · saved on this device</span><button class="link" id="viewDemo" type="button">View demo →</button></div>
+  <div class="mine" id="mineBar"><span>Your workspace · this device</span><button class="link" id="viewDemo" type="button">View demo →</button></div>
 
   <header class="mast">
     <div class="mast-top"><div class="eyebrow" id="mEyebrow">Your Hub</div><button class="rules-link" id="rulesBtn" type="button">Rules</button></div>
@@ -343,7 +348,7 @@
         <form class="add" id="officeForm"><input id="officeInput" placeholder="[CLIENT] Next thing to handle" autocomplete="off"><button class="btn" type="submit">Park</button></form>
         <div class="chips" id="officeTags"></div>
         <div class="day today"><div class="day-h"><span id="ohDay">Today</span><span id="officeCount"></span></div><div id="officeList"></div></div>
-        <div class="foot"><span>Tap to mark ✓ · ☆ for Focus · × to remove</span><button class="link" id="officeClear">Clear done</button></div>
+        <div class="foot"><span>Tap ✓ · hold to edit · ☆ Focus · × remove</span><button class="link" id="officeClear">Clear done</button></div>
       </div>
     </details>
     <details class="sec" open id="secPort">
@@ -423,7 +428,7 @@
       <div class="sec-body">
         <form class="add" id="personalForm"><input id="personalInput" placeholder="Walk · Call Mom · Read 20 min" autocomplete="off"><button class="btn" type="submit">Add</button></form>
         <div class="day today"><div class="day-h"><span>Today</span><span id="personalCount"></span></div><div id="personalList"></div></div>
-        <div class="foot"><span>Done items clear tomorrow</span><button class="link" id="personalClear">Clear done</button></div>
+        <div class="foot"><span>Hold to edit · done items clear tomorrow</span><button class="link" id="personalClear">Clear done</button></div>
       </div>
     </details>
     <details class="sec" open>
@@ -507,7 +512,7 @@
     </details>
   </div>
 
-  <footer id="foot">Hub · prototype · your data stays on this device</footer>
+  <footer id="foot">Command Hub · prototype · your data stays on this device</footer>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -516,9 +521,9 @@
 
 <!-- First open: sits over a live, populated Hub -->
 <div class="sheet" id="intro"><div class="in">
-  <div class="eyebrow">Hub</div>
-  <div class="theme">Your Hub. Your Rules. Your Day.</div>
-  <p class="tagline">This is a working Hub for Reed Studio, a fictional design studio. One week in, mid-flight.</p>
+  <div class="eyebrow">Command Hub · Your Personal Command Center</div>
+  <div class="theme">Cut the Noise. Take Command.</div>
+  <p class="tagline">A working command center for Reed Studio, a fictional design studio. One week in, mid-flight.</p>
   <div class="pts">
     <div><span>Focus</span>The one next action, three priorities, what needs you</div>
     <div><span>Business</span>Office Hours, portfolio, milestones, decisions</div>
@@ -565,7 +570,11 @@
   const weekKey = (d = new Date()) => { const m = new Date(d); m.setDate(m.getDate() - (m.getDay() + 6) % 7); return dayKey(m); };
   const startOfToday = () => { const d = new Date(); d.setHours(0,0,0,0); return d.getTime(); };
   const uid = () => Math.random().toString(36).slice(2, 10);
-  const toast = t => { const n = $("toast"); n.textContent = t; n.classList.add("on"); clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove("on"), 1700); };
+  const toast = (t, undo) => {
+    const n = $("toast"); n.textContent = t; n.classList.add("on"); n.classList.toggle("act", !!undo);
+    if (undo) { const b = document.createElement("button"); b.type = "button"; b.textContent = "Undo"; b.onclick = () => { n.classList.remove("on", "act"); undo(); }; n.appendChild(b); }
+    clearTimeout(n._t); n._t = setTimeout(() => n.classList.remove("on", "act"), undo ? 4500 : 1700);
+  };
   const todayLabel = () => new Date().toLocaleDateString(undefined, { weekday:"short", month:"short", day:"numeric" });
 
   // ---------- dates ----------
@@ -659,7 +668,7 @@
     return {
       v: 5, mode: "blank",
       cfg: {
-        name: name || "Your Hub", theme: "Your year", tagline: "One place. Three priorities. Less noise.",
+        name: name || "Your Hub", theme: "Your year", tagline: "Less noise. More control.",
         focus: "Name the one thing the next 90 days are for.",
         start: "08:30", end: "09:30",
         tags: ["WORK","CLIENT","ADMIN","MAIL"],
@@ -777,10 +786,26 @@
     }
     if (!inFocus) {
       const x = el("button", "ib", "×"); x.type = "button"; x.setAttribute("aria-label", "Remove");
-      x.onclick = e => { e.stopPropagation(); state[key] = state[key].filter(i => i.id !== it.id); persist(); renderAll(); };
+      x.onclick = e => { e.stopPropagation(); const at = state[key].indexOf(it); state[key] = state[key].filter(i => i.id !== it.id); persist(); renderAll(); toast("Removed", () => { state[key].splice(Math.max(0, at), 0, it); persist(); renderAll(); }); };
       row.appendChild(x);
     }
-    row.onclick = () => toggleDone(it);
+    let held = false, hold = null;
+    const startEdit = () => {
+      held = true; if (it.done) return;
+      const inp = el("input", "edit-in"); inp.value = (it.tag ? "[" + it.tag + "] " : "") + it.text; inp.maxLength = 140; inp.setAttribute("aria-label", "Edit task");
+      txt.textContent = ""; txt.appendChild(inp); inp.focus(); inp.select();
+      inp.onclick = e => e.stopPropagation();
+      let fin = false;
+      const save = keep => { if (fin) return; fin = true; if (keep) { const v = inp.value.trim(); if (v) { const p = key === "office" ? parse(v) : { tag: "", text: v }; it.tag = p.tag; it.text = p.text; persist(); toast("Updated"); } } renderAll(); };
+      inp.onkeydown = e => { if (e.key === "Enter") save(true); if (e.key === "Escape") save(false); };
+      inp.onblur = () => save(true);
+    };
+    const cancelHold = () => clearTimeout(hold);
+    row.addEventListener("pointerdown", e => { if (e.target.closest("button,input")) return; held = false; hold = setTimeout(startEdit, 500); });
+    ["pointerup","pointerleave","pointercancel","pointermove"].forEach(ev => row.addEventListener(ev, e => { if (ev !== "pointermove" || Math.abs(e.movementY) > 3) cancelHold(); }));
+    row.addEventListener("contextmenu", e => { if (!e.target.closest("input")) e.preventDefault(); });
+    row.onclick = e => { if (held || e.target.closest("input")) { held = false; return; } toggleDone(it); };
+    row._edit = startEdit;
     return row;
   }
   function renderList(key) {
@@ -853,7 +878,18 @@
   const daysAgo = ts => { const d = Math.floor((Date.now() - ts) / 864e5); return d <= 0 ? "today" : d === 1 ? "1 day" : d + " days"; };
   function decRow(d) {
     const w = el("div", "dec");
-    w.append(el("div", "dec-t", d.q), el("div", "dec-w", "Waiting " + daysAgo(d.ts)));
+    const qt = el("div", "dec-t", d.q); qt.style.cursor = "text"; qt.title = "Tap to edit";
+    qt.onclick = () => {
+      if (qt.querySelector("input")) return;
+      const inp = el("input", "edit-in"); inp.value = d.q; inp.maxLength = 140; inp.setAttribute("aria-label", "Edit decision");
+      Object.assign(inp.style, { width: "100%", background: "var(--card2)", border: "1px solid var(--gold)", borderRadius: "8px", color: "var(--text)", padding: "6px 10px", font: "inherit", outline: "0" });
+      qt.textContent = ""; qt.appendChild(inp); inp.focus();
+      let fin = false;
+      const save = keep => { if (fin) return; fin = true; const v = inp.value.trim(); if (keep && v && v !== d.q) { const real = state.decisions.find(x => x.id === d.id); if (real) real.q = v; persist(); toast("Updated"); } renderAll(); };
+      inp.onkeydown = e => { if (e.key === "Enter") save(true); if (e.key === "Escape") save(false); };
+      inp.onblur = () => save(true);
+    };
+    w.append(qt, el("div", "dec-w", "Waiting " + daysAgo(d.ts) + " · tap to edit"));
     const row = el("div", "row");
     const inp = el("input"); inp.placeholder = "Your call…";
     const b = el("button", "btn", "Decide"); b.type = "button";
@@ -1285,10 +1321,10 @@
 
   // ---------- guided tour (demo only) ----------
   const TOUR = [
-    { v: "focus", sel: ".hero", h: "One next action", p: "Hub picks the single most important thing to do now, and shows what got done this week." },
+    { v: "focus", sel: ".hero", h: "One next action", p: "Command Hub picks the single most important thing to do now, and shows what got done this week." },
     { v: "focus", sel: "#exceptions", h: "Only what needs you", p: "Decisions owed, overdue dates, gates coming up. Exceptions only. Tap any row to jump to it." },
     { v: "focus", sel: "#focusList", up: true, h: "Three priorities. Hard cap.", p: "Star up to three tasks from anywhere. A fourth won't fit. Tap a task to mark it done — try it." },
-    { v: "business", sel: "#officeForm", up: true, h: "Office Hours: park it, mark it", p: "Drop tasks in with a tag. Tap to mark ✓. Done items clear themselves tomorrow." },
+    { v: "business", sel: "#officeForm", up: true, h: "Office Hours: park it, mark it", p: "Drop tasks in with a tag. Tap to mark ✓, hold to edit. Done items clear themselves tomorrow." },
     { v: "business", sel: "#portBody", h: "The whole portfolio, one screen", p: "Every client and venture on one card. Tap a status pill to cycle Active → At risk → Blocked → Paused." },
     { v: "business", sel: "#msBody", h: "Milestones and gates", p: "Dates that matter and calls that need approval. They feed the Overdue and Approaching alerts on Focus." },
     { v: "personal", sel: "#upBody", h: "Business is business. This is yours.", p: "Trips with countdowns, today's personal list, and a weekly habit rhythm that resets Monday." },
@@ -1329,19 +1365,19 @@
     $("secMineCtl").style.display = demo ? "none" : "";
     $("bDemoNote").hidden = !demo; $("bBody").hidden = demo;
     $("bSub").textContent = demo ? "For your own Hub." : "Your data lives only on this device.";
-    $("foot").textContent = demo ? "Hub · demo · sample data resets daily · your own Hub is kept separately" : "Hub · prototype · your data stays on this device";
+    $("foot").textContent = demo ? "Command Hub · demo · sample data resets daily · your own Hub is kept separately" : "Command Hub · prototype · your data stays on this device";
     $("noSave").style.display = canSave ? "none" : "block";
   }
 
   // ---------- backup ----------
-  const backupText = () => JSON.stringify({ app: "hub", version: 5, exported: new Date().toISOString(), state }, null, 1);
+  const backupText = () => JSON.stringify({ app: "command-hub", version: 5, exported: new Date().toISOString(), state }, null, 1);
   $("bExport").onclick = () => {
     const txt = backupText(); $("bText").value = txt;
     if (window.claude) { toast("Backup ready below. Tap Copy and save it."); return; }
     try {
       const a = document.createElement("a");
       a.href = URL.createObjectURL(new Blob([txt], { type: "application/json" }));
-      a.download = "hub-backup-" + dayKey() + ".json";
+      a.download = "command-hub-backup-" + dayKey() + ".json";
       document.body.appendChild(a); a.click(); a.remove();
       setTimeout(() => URL.revokeObjectURL(a.href), 4000);
       toast("Backup exported");
