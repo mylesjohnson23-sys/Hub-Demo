@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Command Hub">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -272,6 +275,10 @@
   .btn.danger{border-color:var(--bad);color:var(--bad)}
   .btn.danger.solid{background:var(--bad);color:var(--bg)}
   .btn:disabled{opacity:.4;cursor:not-allowed}
+  .install{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin:-6px 0 18px;font-size:13.5px;color:var(--muted)}
+  .install b{color:var(--text);font-weight:600}
+  .install .h{display:flex;justify-content:space-between;align-items:center;font:600 11px/1 Inter,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .statbox{font-family:ui-monospace,Menlo,monospace;font-size:12px;white-space:pre-wrap;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--muted);margin:0 0 10px}
   .warnbar{display:none;font-size:12.5px;color:var(--bad);border:1px solid rgba(216,121,121,.5);border-radius:10px;padding:9px 12px;margin-bottom:16px}
   .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:var(--text);color:var(--bg);font:500 14px Inter,system-ui,sans-serif;padding:9px 16px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60;display:flex;gap:14px;align-items:center;white-space:nowrap}
   .toast.on.act{pointer-events:auto}
@@ -293,6 +300,10 @@
     <div class="row2"><button class="btn solid" id="tourBtn" type="button">Explore Demo</button><button class="btn" id="mineBtn" type="button">Make It Mine</button></div>
   </div>
   <div class="mine" id="mineBar"><span>Your workspace · this device</span><button class="link" id="viewDemo" type="button">View demo →</button></div>
+  <div class="install" id="installCard" hidden>
+    <div class="h"><span>Add to your home screen</span><button class="link" id="installX" type="button" style="color:var(--faint)">Dismiss</button></div>
+    <div id="installTxt"></div>
+  </div>
 
   <header class="mast">
     <div class="mast-top"><div class="eyebrow" id="mEyebrow">Your Hub</div><button class="rules-link" id="rulesBtn" type="button">Rules</button></div>
@@ -503,6 +514,10 @@
       <summary><div><span class="sec-title">Demo</span><span class="sec-sub">Sample data. Separate from your Hub.</span></div><span class="chev">›</span></summary>
       <div class="sec-body"><div class="row2"><button class="btn" id="sMine" type="button">Make It Mine</button><button class="btn ghost" id="sResetDemo" type="button">Reset demo</button></div><p class="hint">Reset restores the sample company. Your own Hub is never affected.</p></div>
     </details>
+    <details class="sec" open id="secStats">
+      <summary><div><span class="sec-title">Your stats</span><span class="sec-sub">Counts only. No task text. Nothing is sent automatically.</span></div><span class="chev">›</span></summary>
+      <div class="sec-body"><div class="statbox" id="statText"></div><button class="btn solid" id="statCopy" type="button">Copy my stats</button><p class="hint">Paste into your reply to the test team.</p></div>
+    </details>
     <details class="sec" id="secMineCtl">
       <summary><div><span class="sec-title">Workspace</span><span class="sec-sub">Your Hub and the demo are kept apart.</span></div><span class="chev">›</span></summary>
       <div class="sec-body">
@@ -678,7 +693,8 @@
       },
       office: [], personal: [], decisions: [], log: [],
       ventures: [], milestones: [], briefs: [], trips: [],
-      health: { week: weekKey(), counts: {} }, weekDone: { week: weekKey(), n: 0 }, parked: []
+      health: { week: weekKey(), counts: {} }, weekDone: { week: weekKey(), n: 0 }, parked: [],
+      stats: newStats()
     };
   }
 
@@ -702,8 +718,18 @@
   const lsSet = (k, v) => { try { if (canSave) localStorage.setItem(k, v); } catch (e) {} };
   const lsDel = k => { try { if (canSave) localStorage.removeItem(k); } catch (e) {} };
   const isDemo = () => state && state.mode === "sample";
+  const isStandalone = () => { try { return window.navigator.standalone === true || window.matchMedia("(display-mode: standalone)").matches; } catch (e) { return false; } };
+  function track(k, n) {
+    if (!state || isDemo()) return;
+    const st = state.stats || (state.stats = newStats());
+    if (k) st[k] = Math.max(0, (st[k] || 0) + (n == null ? 1 : n));
+    const d = dayKey(); if (!st.days.includes(d)) st.days.push(d);
+    if (isStandalone()) st.installed = true;
+  }
   const valid = s => s && typeof s === "object" && s.cfg && Array.isArray(s.office) && Array.isArray(s.personal) && Array.isArray(s.decisions) && Array.isArray(s.log);
+  const newStats = () => ({ since: Date.now(), days: [], added: 0, done: 0, edited: 0, removed: 0, starred: 0, decLogged: 0, decMade: 0, habitLogs: 0, firstDoneAt: null, installed: false });
   function fill(s) {
+    if (!s.stats) s.stats = newStats();
     const b = blankState(); s.cfg = Object.assign(b.cfg, s.cfg); s.cfg.mods = Object.assign(b.cfg.mods, s.cfg.mods);
     ["ventures","milestones","briefs","trips"].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
     s.parked = s.parked || []; s.health = s.health || b.health; s.weekDone = s.weekDone || b.weekDone; s.v = 5; s.mode = s.mode || "blank"; return s;
@@ -759,12 +785,14 @@
     const p = key === "office" ? parse(raw) : { tag: "", text: raw.trim() };
     if (!p.text) return false;
     state[key].push({ id: uid(), tag: p.tag, text: p.text, done: false, star: false, ts: Date.now() });
-    persist(); renderAll(); return true;
+    track("added"); persist(); renderAll(); return true;
   }
   function toggleDone(it) {
     it.done = !it.done; it.doneOn = it.done ? dayKey() : null;
     state.weekDone.n = Math.max(0, state.weekDone.n + (it.done ? 1 : -1));
     if (it.done) it.star = false;
+    track("done", it.done ? 1 : -1);
+    if (it.done && state.stats && !state.stats.firstDoneAt && !isDemo()) state.stats.firstDoneAt = Date.now();
     persist(); renderAll(); if (it.done) toast("Marked ✓");
   }
   function itemRow(key, it, inFocus) {
@@ -780,13 +808,13 @@
       s.onclick = e => {
         e.stopPropagation();
         if (!it.star && starredCount() >= 3) { toast("Three priorities max. Unstar one first."); return; }
-        it.star = !it.star; persist(); renderAll(); if (it.star) toast("Added to Focus");
+        it.star = !it.star; if (it.star) track("starred"); persist(); renderAll(); if (it.star) toast("Added to Focus");
       };
       row.appendChild(s);
     }
     if (!inFocus) {
       const x = el("button", "ib", "×"); x.type = "button"; x.setAttribute("aria-label", "Remove");
-      x.onclick = e => { e.stopPropagation(); const at = state[key].indexOf(it); state[key] = state[key].filter(i => i.id !== it.id); persist(); renderAll(); toast("Removed", () => { state[key].splice(Math.max(0, at), 0, it); persist(); renderAll(); }); };
+      x.onclick = e => { e.stopPropagation(); const at = state[key].indexOf(it); state[key] = state[key].filter(i => i.id !== it.id); track("removed"); persist(); renderAll(); toast("Removed", () => { state[key].splice(Math.max(0, at), 0, it); persist(); renderAll(); }); };
       row.appendChild(x);
     }
     let held = false, hold = null;
@@ -796,7 +824,7 @@
       txt.textContent = ""; txt.appendChild(inp); inp.focus(); inp.select();
       inp.onclick = e => e.stopPropagation();
       let fin = false;
-      const save = keep => { if (fin) return; fin = true; if (keep) { const v = inp.value.trim(); if (v) { const p = key === "office" ? parse(v) : { tag: "", text: v }; it.tag = p.tag; it.text = p.text; persist(); toast("Updated"); } } renderAll(); };
+      const save = keep => { if (fin) return; fin = true; if (keep) { const v = inp.value.trim(); if (v) { const p = key === "office" ? parse(v) : { tag: "", text: v }; it.tag = p.tag; it.text = p.text; track("edited"); persist(); toast("Updated"); } } renderAll(); };
       inp.onkeydown = e => { if (e.key === "Enter") save(true); if (e.key === "Escape") save(false); };
       inp.onblur = () => save(true);
     };
@@ -896,7 +924,7 @@
     const go = () => {
       const a = inp.value.trim(); if (!a) { inp.focus(); return; }
       state.decisions = state.decisions.filter(x => x.id !== d.id);
-      state.log.unshift({ id: d.id, q: d.q, a, ts: d.ts, at: Date.now() });
+      state.log.unshift({ id: d.id, q: d.q, a, ts: d.ts, at: Date.now() }); track("decMade");
       persist(); renderAll(); toast("Decided. On the record.");
     };
     b.onclick = go; inp.onkeydown = e => { if (e.key === "Enter") go(); };
@@ -954,7 +982,7 @@
       for (let i = 0; i < Math.max(goal, c); i++) {
         const b = el("button", i < c ? "on" : "", i < c ? "✓" : ""); b.type = "button";
         b.setAttribute("aria-label", k + " " + (i + 1));
-        b.onclick = () => { state.health.counts[k] = i < c ? i : i + 1; persist(); renderHealth(); renderCounts(); };
+        b.onclick = () => { state.health.counts[k] = i < c ? i : i + 1; track("habitLogs", i < c ? -1 : 1); persist(); renderHealth(); renderCounts(); };
         bx.appendChild(b);
       }
       r.appendChild(bx);
@@ -1357,8 +1385,43 @@
   $("tBack").onclick = () => tourGo(tStep - 1);
   $("tEnd").onclick = () => endTour(false);
 
+  function statsText() {
+    const st = state.stats || newStats(), d0 = new Date(st.since);
+    const lanes = [["Portfolio", state.ventures.length], ["Milestones", state.milestones.length], ["Briefs", state.briefs.length], ["Trips", state.trips.length]].map(([n, c]) => n + " " + c).join(" · ");
+    const mins = st.firstDoneAt ? (st.firstDoneAt - st.since) / 60000 : null;
+    const ttf = mins == null ? "not yet" : mins < 1 ? "under 1 min" : Math.round(mins) + " min";
+    const off = Object.entries(state.cfg.mods).filter(([, v]) => !v).map(([k]) => k).join(", ") || "none";
+    return [
+      "COMMAND HUB · TEST STATS · " + dayKey(),
+      "Started: " + dayKey(d0) + " · days active: " + st.days.length,
+      "Time to first task done: " + ttf,
+      "Tasks added " + st.added + " · done " + st.done + " · edited " + st.edited + " · removed " + st.removed + " · starred " + st.starred,
+      "Decisions logged " + st.decLogged + " · decided " + st.decMade,
+      "Habit check-ins " + st.habitLogs + " · " + lanes,
+      "Open now: " + state.office.filter(i => !i.done).length + " business · " + state.personal.filter(i => !i.done).length + " personal",
+      "Home screen: " + (st.installed || isStandalone() ? "yes" : "no") + " · lanes off: " + off
+    ].join("\n");
+  }
+  $("statCopy").onclick = async () => {
+    const t = statsText(); $("statText").textContent = t;
+    try { await navigator.clipboard.writeText(t); toast("Stats copied"); }
+    catch (e) { const r = document.createRange(); r.selectNodeContents($("statText")); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); toast("Selected · tap Copy"); }
+  };
+  function installCard() {
+    const show = !isDemo() && !isStandalone() && !lsGet("hub-install-dismissed");
+    $("installCard").hidden = !show; if (!show) return;
+    const ua = navigator.userAgent || "", ios = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && "ontouchend" in document);
+    const box = $("installTxt"); box.textContent = "";
+    const line = (a, b, c) => { box.append(document.createTextNode(a)); const x = el("b", null, b); box.append(x, document.createTextNode(c)); };
+    if (ios) line("Opens like an app and keeps your data safer. In Safari tap ", "Share ⎋ → Add to Home Screen", ".");
+    else line("Opens like an app and keeps your data safer. In your browser menu tap ", "Add to Home screen / Install app", ".");
+  }
+  $("installX").onclick = () => { lsSet("hub-install-dismissed", "1"); $("installCard").hidden = true; };
   function chrome() {
     const demo = isDemo();
+    $("secStats").style.display = demo ? "none" : "";
+    if (!demo) $("statText").textContent = statsText();
+    installCard();
     $("demoBar").style.display = demo ? "" : "none";
     $("mineBar").style.display = demo ? "none" : "";
     $("secDemoCtl").style.display = demo ? "" : "none";
@@ -1412,7 +1475,7 @@
     if (addItem("office", v)) $("officeInput").value = "";
   };
   $("personalForm").onsubmit = e => { e.preventDefault(); if (addItem("personal", $("personalInput").value)) $("personalInput").value = ""; };
-  $("decForm").onsubmit = e => { e.preventDefault(); const v = $("decInput").value.trim(); if (!v) return; state.decisions.push({ id: uid(), q: v, ts: Date.now() }); $("decInput").value = ""; persist(); renderAll(); };
+  $("decForm").onsubmit = e => { e.preventDefault(); const v = $("decInput").value.trim(); if (!v) return; state.decisions.push({ id: uid(), q: v, ts: Date.now() }); $("decInput").value = ""; track("decLogged"); persist(); renderAll(); };
   $("officeClear").onclick = () => { state.office = state.office.filter(i => !i.done); persist(); renderAll(); };
   $("personalClear").onclick = () => { state.personal = state.personal.filter(i => !i.done); persist(); renderAll(); };
 
@@ -1424,7 +1487,7 @@
     document.querySelectorAll(".view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
     document.querySelectorAll(".tab").forEach(b => b.setAttribute("aria-selected", b.dataset.v === v ? "true" : "false"));
     $("rulesBtn").classList.toggle("on", v === "setup");
-    if (v === "setup") fillSetup();
+    if (v === "setup") { fillSetup(); if (!isDemo()) $("statText").textContent = statsText(); }
     if (location.hash !== "#" + v) try { history.replaceState(null, "", "#" + v); } catch (e) {}
   }
   document.querySelectorAll(".tab").forEach(b => b.onclick = () => show(b.dataset.v));
@@ -1437,6 +1500,8 @@
   }
   applyMods(); renderTags(); renderAll(); ohStatus(); chrome();
   if (firstRun) openSheet("intro");
+  const ping = () => { if (!isDemo() && document.visibilityState !== "hidden") { const n = (state.stats && state.stats.days.length) || 0; track(null); if (state.stats.days.length !== n || (isStandalone() && !state.stats.installed)) persist(); } };
+  ping(); document.addEventListener("visibilitychange", ping);
   setInterval(() => { ohStatus(); renderFocus(); }, 60000);
   show(location.hash.slice(1) || "focus");
 })();
