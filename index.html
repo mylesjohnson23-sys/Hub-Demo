@@ -643,7 +643,7 @@
       ventures: [
         { id: uid(), name: "Harbor & Co.", mono: "HC", role: "Retainer client · brand strategy", status: "active", phase: "Month 3 of 6", next: "Send revised scope" },
         { id: uid(), name: "Lakeview", mono: "LV", role: "Retainer client · website rebuild", status: "risk", phase: "Kickoff", next: "Confirm speaking slot and timeline" },
-        { id: uid(), name: "Northline Coffee", mono: "NC", role: "Project client · packaging refresh", status: "blocked", phase: "Waiting on print quote", next: "Chase printer for final quote" },
+        { id: uid(), name: "Northline Coffee", mono: "NC", role: "Project client · packaging refresh", status: "blocked", phase: "Waiting on print quote", next: "Follow up with printer on final quote" },
         { id: uid(), name: "Newsletter", mono: "NL", role: "Owned audience · 1,240 subscribers", status: "active", phase: "Weekly", next: "Draft Thursday issue" },
         { id: uid(), name: "Course idea", mono: "CI", role: "Digital product", status: "paused", phase: "Parked until Q2", next: "" }
       ],
@@ -677,7 +677,7 @@
         it("OPS","Renew domain + check site backups", { ts: y }),
         it("CONTENT","Draft Thursday newsletter", { star: true }),
         it("ADMIN","Q4 estimated tax payment", { done: true, doneOn: t }),
-        it("CLIENT","Northline — chase print quote", { ts: y }),
+        it("CLIENT","Northline — follow up on print quote", { ts: y }),
         it("SALES","Send case study to two warm leads"),
         it("CLIENT","Harbor — approve moodboard v2", { done: true, doneOn: t }),
         it("MAIL","Priya — invoice question")
@@ -814,7 +814,9 @@
     if (!raw.trim()) return false;
     const p = key === "office" ? parse(raw) : { tag: "", text: raw.trim() };
     if (!p.text) return false;
-    state[key].push({ id: uid(), tag: p.tag, text: p.text, done: false, star: false, ts: Date.now() });
+    const afterHours = key === "office" && (new Date().getHours()*60 + new Date().getMinutes()) >= toMin(state.cfg.end);
+    state[key].push({ id: uid(), tag: p.tag, text: p.text, done: false, star: false, ts: afterHours ? startOfToday() + 864e5 : Date.now() });
+    if (afterHours) toast("Parked for tomorrow's Office Hours");
     track("added"); persist(); renderAll(); return true;
   }
   function toggleDone(it) {
@@ -894,7 +896,7 @@
       na.appendChild(document.createTextNode(next.text));
       $("nextMeta").textContent = "Today · Office Hours " + fmt(state.cfg.start) + (next.star ? " · Priority" : "");
     } else {
-      na.textContent = "Nothing parked. Office Hours is open.";
+      na.textContent = "Nothing parked. Office Hours " + ohText().split(" · ")[0] + ".";
       $("nextMeta").textContent = "Park a task in Business, then star it.";
     }
     $("sDone").textContent = state.weekDone.n;
@@ -1332,9 +1334,9 @@
   function renderCounts() {
     setCt("ctFocus", priorities().length);
     setCt("ctBiz", state.office.filter(i => !i.done).length);
-    setCt("ctLife", state.personal.filter(i => !i.done).length);
+    setCt("ctLife", state.cfg.mods.personal ? state.personal.filter(i => !i.done).length : 0);
     const alerts = MAIL.filter(m => m.kind === "alert").length;
-    setCt("ctMail", MAIL.filter(m => m.kind === "urgent" && !state.parked.includes(m.id)).length + alerts, alerts > 0);
+    setCt("ctMail", state.cfg.mods.mail ? MAIL.filter(m => m.kind === "urgent" && !state.parked.includes(m.id)).length + alerts : 0, alerts > 0);
   }
 
   // ---------- rules ----------
